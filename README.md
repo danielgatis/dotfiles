@@ -2,5 +2,5 @@
 
 ## Installation
 ```
-  $ curl -L https://raw.githubusercontent.com/danielgatis/dotfiles/master/install | bash
+  $ curl -fsSL https://raw.githubusercontent.com/danielgatis/dotfiles/master/install.sh | bash
 ```

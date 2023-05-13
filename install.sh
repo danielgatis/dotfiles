@@ -2,31 +2,27 @@
 
 pushd ~
 
-if [ -d "/opt/homebrew/bin/brew" ]; then
-  echo "Updating Homebrew"
-  brew update
-else
-  echo "Installing Hombrew"
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-  eval "$(/opt/homebrew/bin/brew shellenv)"
+printf "\n\nInstalling Hombrew\n\n"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+eval "$(/opt/homebrew/bin/brew shellenv)"
 
-  echo "Installing chezmoi"
-  brew install chezmoi
-fi
+printf "\n\nInstalling chezmoi\n\n"
+brew install chezmoi
 
-echo "Cloning dotfiles"
+printf "\n\nCloning dotfiles\n\n"
 chezmoi init --apply danielgatis
 
-echo "Installing packages"
+printf "\n\nInstalling homebrew packages\n\n"
 brew bundle --global --force --no-lock || true
 
-if [ "$TERM_PROGRAM" = tmux ]; then
-  sh ~/.tmux/plugins/tpm/scripts/install_plugins.sh
-else
-  tmux start-server
-  tmux new-session -d
-  sh ~/.tmux/plugins/tpm/scripts/install_plugins.sh
-  tmux kill-server
-fi
+printf "\n\nInstalling NvChad\n\n"
+git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1
+nvim +NvChadUpdate +qall
+
+printf "\n\nInstalling tmux plugins\n\n"
+tmux start-server
+tmux new-session -d
+sh ~/.tmux/plugins/tpm/scripts/install_plugins.sh
+tmux kill-server
 
 popd
