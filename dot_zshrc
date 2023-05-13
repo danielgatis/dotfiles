@@ -1,0 +1,83 @@
+# History
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=10000000
+SAVEHIST=10000000
+setopt BANG_HIST                 # Treat the '!' character specially during expansion.
+setopt EXTENDED_HISTORY          # Write the history file in the ":start:elapsed;command" format.
+setopt INC_APPEND_HISTORY        # Write to the history file immediately, not when the shell exits.
+setopt SHARE_HISTORY             # Share history between all sessions.
+setopt HIST_EXPIRE_DUPS_FIRST    # Expire duplicate entries first when trimming history.
+setopt HIST_IGNORE_DUPS          # Don't record an entry that was just recorded again.
+setopt HIST_IGNORE_ALL_DUPS      # Delete old recorded entry if new entry is a duplicate.
+setopt HIST_FIND_NO_DUPS         # Do not display a line previously found.
+setopt HIST_IGNORE_SPACE         # Don't record an entry starting with a space.
+setopt HIST_SAVE_NO_DUPS         # Don't write duplicate entries in the history file.
+setopt HIST_REDUCE_BLANKS        # Remove superfluous blanks before recording entry.
+setopt HIST_VERIFY               # Don't execute immediately upon history expansion.
+setopt HIST_BEEP                 # Beep when accessing nonexistent history.
+
+# Options
+setopt extended_history
+setopt hist_expire_dups_first
+setopt hist_ignore_all_dups
+setopt hist_ignore_space
+setopt hist_verify
+setopt inc_append_history
+setopt share_history
+bindkey -e
+
+# Aliases
+alias vim="nvim"
+alias cop="git add -N .; git diff --name-only | grep '.rb\|.rake' | grep -v .erb | grep -v 'db/schema.rb' | xargs rubocop -A"
+alias spec='bin/rspec $(git ls-files --modified --others spec | grep -v factories)'
+alias rspec='bin/rspec'
+alias idea='open -na "IntelliJ IDEA CE.app"'
+
+# Zplug
+export ZPLUG_HOME=/opt/homebrew/opt/zplug
+export ZPLUG_PROTOCOL=https
+source $ZPLUG_HOME/init.zsh
+
+zplug "zplug/zplug", hook-build:"zplug --self-manage"
+zplug "zsh-users/zsh-completions"
+zplug "zsh-users/zsh-autosuggestions"
+zplug "zsh-users/zsh-syntax-highlighting"
+zplug "spaceship-prompt/spaceship-prompt", use:spaceship.zsh, from:github, as:theme
+zplug "rupa/z", use:z.sh
+zplug "plugins/direnv", from:oh-my-zsh
+
+SPACESHIP_TIME_SHOW=true
+
+if ! zplug check; then
+  zplug install
+fi
+
+zplug load
+
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+
+# Compile flags
+export optflags="-Wno-error=implicit-function-declaration"
+export LDFLAGS="-L/opt/homebrew/opt/libffi/lib -L/opt/homebrew/opt/postgresql@13/lib"
+export CPPFLAGS="-I/opt/homebrew/opt/libffi/include -I/opt/homebrew/opt/postgresql@13/include"
+export PKG_CONFIG_PATH="/opt/homebrew/opt/libffi/lib/pkgconfig:/opt/homebrew/opt/postgresql@13/lib/pkgconfig"
+export LIBRARY_PATH=$LIBRARY_PATH:/opt/homebrew/opt/openssl/lib/
+export PYTHON_CONFIGURE_OPTS="--enable-framework"
+
+# Brew
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# ASDF
+source /opt/homebrew/opt/asdf/libexec/asdf.sh
+
+# Sdkman
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+# Exports
+export EDITOR=nvim
+export LANG="en_US.UTF-8"
+export LC_ALL="en_US.UTF-8"
+export TMUXP_CONFIGDIR="$HOME/tmuxp"
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="/opt/homebrew/opt/postgresql@13/bin:$PATH"

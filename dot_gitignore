@@ -1,0 +1,9 @@
+.docker
+.DS_Store
+.tool-versions
+.vscode
+docker-compose.deps.yml
+.env
+.tmuxp.yaml
+config/initializers/excluded/*
+.solargraph.yml
