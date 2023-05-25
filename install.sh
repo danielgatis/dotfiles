@@ -15,10 +15,6 @@ chezmoi init --apply danielgatis
 printf "\n\nInstalling homebrew packages\n\n"
 brew bundle --global --force --no-lock || true
 
-printf "\n\nInstalling NvChad\n\n"
-git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1
-nvim +NvChadUpdate +qall
-
 printf "\n\nInstalling tmux plugins\n\n"
 tmux start-server
 tmux new-session -d
