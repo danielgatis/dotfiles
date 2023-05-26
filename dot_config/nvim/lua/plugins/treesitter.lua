@@ -2,17 +2,9 @@
 
 return {
   {
-    "folke/tokyonight.nvim",
-    lazy = true,
-    opts = { style = "night" },
-  },
-
-  { import = "lazyvim.plugins.extras.lang.typescript" },
-
-  {
     "nvim-treesitter/nvim-treesitter",
-    opts = {
-      ensure_installed = {
+    opts = function(_, opts)
+      vim.list_extend(opts.ensure_installed, {
         "bash",
         "html",
         "javascript",
@@ -28,7 +20,7 @@ return {
         "vim",
         "yaml",
         "ruby",
-      },
-    },
+      })
+    end,
   },
 }
