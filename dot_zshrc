@@ -28,7 +28,7 @@ bindkey -e
 
 # Aliases
 alias vim="nvim"
-alias cop="git add -N .; git diff --name-only | grep '.rb\|.rake' | grep -v .erb | xargs rubocop -A"
+alias cop="git add -N .; git diff --name-only | grep '.rb\|.rake' | grep -v .erb | grep -v 'db/schema.rb' | xargs rubocop -A"
 alias spec='bin/rspec $(git ls-files --modified --others spec | grep -v factories)'
 alias rspec='bin/rspec'
 
@@ -76,3 +76,4 @@ export EDITOR=nvim
 export LANG="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 export PATH="$HOME/.local/bin:$PATH"
+unset GEM_HOME
