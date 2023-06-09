@@ -1,23 +1,34 @@
 local M = {}
 
+M.copilot = {
+  suggestion = {
+    auto_trigger = true,
+  },
+}
+
 M.treesitter = {
   ensure_installed = {
-    "vim",
-    "lua",
-    "html",
-    "css",
-    "javascript",
-    "typescript",
-    "tsx",
     "c",
-    "markdown",
+    "css",
+    "go",
+    "html",
+    "javascript",
+    "json",
+    "lua",
     "markdown_inline",
+    "markdown",
+    "python",
+    "ruby",
+    "rust",
+    "scss",
+    "svelte",
+    "tsx",
+    "typescript",
+    "vim",
+    "vue",
   },
   indent = {
     enable = true,
-    -- disable = {
-    --   "python"
-    -- },
   },
 }
 
