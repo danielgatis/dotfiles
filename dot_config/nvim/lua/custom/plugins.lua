@@ -8,12 +8,6 @@ local plugins = {
   },
 
   {
-    "zbirenbaum/copilot.lua",
-    event = "InsertEnter",
-    opts = overrides.copilot,
-  },
-
-  {
     "max397574/better-escape.nvim",
     event = "InsertEnter",
     config = function()
@@ -36,9 +30,19 @@ local plugins = {
   {
     "neovim/nvim-lspconfig",
     config = function()
-        require "plugins.configs.lspconfig"
-        require "custom.configs.lspconfig"
+      require "plugins.configs.lspconfig"
+      require "custom.configs.lspconfig"
     end,
+  },
+
+  {
+    "williamboman/mason.nvim",
+    opts = overrides.mason
+  },
+
+  {
+    "nvim-tree/nvim-tree.lua",
+    opts = overrides.nvimtree,
   },
 
   {
@@ -50,8 +54,8 @@ local plugins = {
       end,
     },
     config = function()
-        require "plugins.configs.lspconfig"
-        require "custom.configs.lspconfig"
+      require "plugins.configs.lspconfig"
+      require "custom.configs.lspconfig"
     end,
   },
 }

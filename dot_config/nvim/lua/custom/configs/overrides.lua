@@ -1,11 +1,5 @@
 local M = {}
 
-M.copilot = {
-  suggestion = {
-    auto_trigger = true,
-  },
-}
-
 M.treesitter = {
   ensure_installed = {
     "c",
@@ -48,6 +42,9 @@ M.mason = {
     -- c/cpp stuff
     "clangd",
     "clang-format",
+
+    -- ruby
+    "solargraph",
   },
 }
 

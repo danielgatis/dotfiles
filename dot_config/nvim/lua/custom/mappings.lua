@@ -14,9 +14,7 @@ M.general = {
     ["<M-Left>"] = { function() require('Navigator').left() end, "Navigate tmux left", opts = { nowait = true } },
     ["<M-Up>"] = { function() require('Navigator').up() end, "Navigate tmux up", opts = { nowait = true } },
     ["<M-Down>"] = { function() require('Navigator').down() end, "Navigate tmux down", opts = { nowait = true } },
-  },
+  }
 }
-
--- more keybinds!
 
 return M
