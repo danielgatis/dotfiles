@@ -1,10 +1,10 @@
-local overrides = require("custom.configs.overrides")
+local overrides = require "custom.configs.overrides"
 
 ---@type NvPluginSpec[]
 local plugins = {
   {
     "NvChad/nvterm",
-    enabled = false
+    enabled = false,
   },
 
   {
@@ -19,7 +19,7 @@ local plugins = {
     "numToStr/Navigator.nvim",
     config = function()
       require("Navigator").setup()
-    end
+    end,
   },
 
   {
@@ -37,7 +37,7 @@ local plugins = {
 
   {
     "williamboman/mason.nvim",
-    opts = overrides.mason
+    opts = overrides.mason,
   },
 
   {
@@ -78,11 +78,11 @@ local plugins = {
     opts = {
       sources = {
         { name = "nvim_lsp", group_index = 2 },
-        { name = "copilot",  group_index = 2 },
-        { name = "luasnip",  group_index = 2 },
-        { name = "buffer",   group_index = 2 },
+        { name = "copilot", group_index = 2 },
+        { name = "luasnip", group_index = 2 },
+        { name = "buffer", group_index = 2 },
         { name = "nvim_lua", group_index = 2 },
-        { name = "path",     group_index = 2 },
+        { name = "path", group_index = 2 },
       },
     },
   },
@@ -99,18 +99,28 @@ local plugins = {
 
   {
     "phaazon/hop.nvim",
-    branch = 'v2',
+    branch = "v2",
     config = function()
-      require'hop'.setup { keys = 'etovxqpdygfblzhckisuran' }
+      require("hop").setup { keys = "etovxqpdygfblzhckisuran" }
     end,
   },
 
   {
     "nvim-pack/nvim-spectre",
     dependencies = {
-      { "nvim-lua/plenary.nvim" }
-    }
-  }
+      { "nvim-lua/plenary.nvim" },
+    },
+  },
+
+  {
+    "tpope/vim-unimpaired",
+    lazy = false,
+  },
+
+  {
+    "machakann/vim-sandwich",
+    lazy = false,
+  },
 }
 
 return plugins
