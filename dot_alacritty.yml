@@ -29,32 +29,6 @@ font:
   normal:
     family: FiraCode Nerd Font
 
-hints:
-  enabled:
-  - regex: "(ipfs:|ipns:|magnet:|mailto:|gemini:|gopher:|https:|http:|news:|file:|git:|ssh:|ftp:)\
-            [^\u0000-\u001F\u007F-\u009F<>\"\\s{-}\\^⟨⟩`]+"
-    hyperlinks: true
-    command: open
-    post_processing: true
-    mouse:
-      enabled: true
-  - regex: "rspec ([a-zA-Z0-9-_\\\\/\\.]+\\.([\\w\\.])+)(:\\d+)*"
-    hyperlinks: true
-    command:
-      program: /opt/homebrew/bin/tmux
-      args: ["send-keys", "bin/"]
-    post_processing: true
-    mouse:
-      enabled: true
-  - regex: "([a-zA-Z0-9-_\\\\/\\.]+\\.([\\w\\.])+)(:\\d+)*"
-    hyperlinks: true
-    command:
-      program: /opt/homebrew/bin/tmux
-      args: ["send-keys", "code --goto "]
-    post_processing: true
-    mouse:
-      enabled: true
-
 key_bindings:
   - { key: N,          mods: Command,          action: CreateNewWindow                       }
   - { key: Q,          mods: Command,          action: Quit                                  }
@@ -126,6 +100,9 @@ key_bindings:
   - { key: X,          mods: Alt|Shift,        chars: "\x1bX"                                }
   - { key: Y,          mods: Alt|Shift,        chars: "\x1bY"                                }
   - { key: Z,          mods: Alt|Shift,        chars: "\x1bZ"                                }
+  # disable search shortcuts
+  - { key: F,          mods: Command,          action: ReceiveChar                           }
+  - { key: B,          mods: Command,          action: ReceiveChar                           }
 
 # TokyoNight Alacritty Colors
 colors:
