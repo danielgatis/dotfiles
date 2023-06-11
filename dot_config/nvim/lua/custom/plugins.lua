@@ -75,16 +75,7 @@ local plugins = {
         end,
       },
     },
-    opts = {
-      sources = {
-        { name = "nvim_lsp", group_index = 2 },
-        { name = "copilot", group_index = 2 },
-        { name = "luasnip", group_index = 2 },
-        { name = "buffer", group_index = 2 },
-        { name = "nvim_lua", group_index = 2 },
-        { name = "path", group_index = 2 },
-      },
-    },
+    opts = overrides.cmp,
   },
 
   {
@@ -121,6 +112,18 @@ local plugins = {
     "machakann/vim-sandwich",
     lazy = false,
   },
+
+  {
+    "RRethy/nvim-treesitter-endwise",
+    config = function()
+      require("nvim-treesitter.configs").setup {
+        endwise = {
+          enable = true,
+        },
+      }
+    end,
+    lazy = false,
+  }
 }
 
 return plugins
