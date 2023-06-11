@@ -11,6 +11,7 @@ env:
   TERM: "xterm-256color"
 
 window:
+  opacity: .9
   option_as_alt: OnlyLeft
   decorations: buttonless
   padding:
