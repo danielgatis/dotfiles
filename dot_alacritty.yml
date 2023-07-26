@@ -11,7 +11,7 @@ env:
   TERM: "xterm-256color"
 
 window:
-  opacity: .9
+  opacity: .95
   option_as_alt: OnlyLeft
   decorations: buttonless
   padding:
@@ -26,7 +26,7 @@ mouse:
     save_to_clipboard: true
 
 font:
-  size: 17
+  size: 16
   normal:
     family: FiraCode Nerd Font
 
