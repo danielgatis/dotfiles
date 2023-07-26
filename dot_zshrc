@@ -53,6 +53,8 @@ fi
 
 zplug load
 
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+
 # Compile flags
 export optflags="-Wno-error=implicit-function-declaration"
 export LDFLAGS="-L/opt/homebrew/opt/libffi/lib"
@@ -76,4 +78,4 @@ export EDITOR=nvim
 export LANG="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 export PATH="$HOME/.local/bin:$PATH"
-unset GEM_HOME
+export TMUXP_CONFIGDIR="$HOME/tmuxp"
