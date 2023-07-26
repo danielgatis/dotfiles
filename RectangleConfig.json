@@ -16,6 +16,9 @@
     "altThirdCycle" : {
       "int" : 0
     },
+    "alwaysAccountForStage" : {
+      "int" : 0
+    },
     "applyGapsToMaximize" : {
       "int" : 0
     },
@@ -46,11 +49,17 @@
     "disabledApps" : {
 
     },
+    "dragFromStage" : {
+      "int" : 0
+    },
     "enhancedUI" : {
       "int" : 1
     },
     "footprintAlpha" : {
       "float" : 0.30000001192092896
+    },
+    "footprintAnimationDurationMultiplier" : {
+      "float" : 0
     },
     "footprintBorderWidth" : {
       "float" : 2
@@ -74,7 +83,7 @@
       "int" : 0
     },
     "landscapeSnapAreas" : {
-
+      "string" : "[5,{\"compound\":-3},1,{\"action\":15},6,{\"action\":13},4,{\"compound\":-2},8,{\"action\":14},7,{\"compound\":-4},3,{\"action\":16},2,{\"action\":2}]"
     },
     "launchOnLogin" : {
       "bool" : true
@@ -87,6 +96,12 @@
     },
     "missionControlDragging" : {
       "int" : 0
+    },
+    "missionControlDraggingAllowedOffscreenDistance" : {
+      "float" : 25
+    },
+    "missionControlDraggingDisallowedDuration" : {
+      "int" : 250
     },
     "moveCursor" : {
       "int" : 0
@@ -175,6 +190,9 @@
     "todoMode" : {
       "bool" : false
     },
+    "todoSidebarSide" : {
+      "int" : 1
+    },
     "todoSidebarWidth" : {
       "float" : 400
     },
@@ -182,27 +200,19 @@
       "int" : 0
     },
     "unsnapRestore" : {
-      "int" : 0
+      "int" : 1
     },
     "windowSnapping" : {
-      "int" : 0
+      "int" : 1
     }
   },
   "shortcuts" : {
+    "almostMaximize" : {
+      "keyCode" : 36,
+      "modifierFlags" : 786432
+    },
     "bottomHalf" : {
       "keyCode" : 125,
-      "modifierFlags" : 786432
-    },
-    "bottomLeft" : {
-      "keyCode" : 38,
-      "modifierFlags" : 786432
-    },
-    "bottomRight" : {
-      "keyCode" : 40,
-      "modifierFlags" : 786432
-    },
-    "center" : {
-      "keyCode" : 8,
       "modifierFlags" : 786432
     },
     "centerThird" : {
@@ -217,10 +227,6 @@
       "keyCode" : 14,
       "modifierFlags" : 786432
     },
-    "larger" : {
-      "keyCode" : 24,
-      "modifierFlags" : 786432
-    },
     "lastThird" : {
       "keyCode" : 5,
       "modifierFlags" : 786432
@@ -233,46 +239,22 @@
       "keyCode" : 123,
       "modifierFlags" : 786432
     },
-    "maximize" : {
-      "keyCode" : 36,
-      "modifierFlags" : 786432
-    },
-    "maximizeHeight" : {
-      "keyCode" : 126,
-      "modifierFlags" : 917504
-    },
-    "nextDisplay" : {
-      "keyCode" : 124,
-      "modifierFlags" : 1835008
-    },
-    "previousDisplay" : {
-      "keyCode" : 123,
-      "modifierFlags" : 1835008
-    },
-    "restore" : {
-      "keyCode" : 51,
+    "reflowTodo" : {
+      "keyCode" : 45,
       "modifierFlags" : 786432
     },
     "rightHalf" : {
       "keyCode" : 124,
       "modifierFlags" : 786432
     },
-    "smaller" : {
-      "keyCode" : 27,
+    "toggleTodo" : {
+      "keyCode" : 11,
       "modifierFlags" : 786432
     },
     "topHalf" : {
       "keyCode" : 126,
       "modifierFlags" : 786432
-    },
-    "topLeft" : {
-      "keyCode" : 32,
-      "modifierFlags" : 786432
-    },
-    "topRight" : {
-      "keyCode" : 34,
-      "modifierFlags" : 786432
     }
   },
-  "version" : "67"
+  "version" : "75"
 }
