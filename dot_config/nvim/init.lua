@@ -13,8 +13,10 @@ vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
 vim.opt.expandtab = false
 vim.opt.signcolumn = 'yes'
+vim.opt.showmode = false
+vim.opt.termguicolors = true
+vim.opt.completeopt = {'menu', 'menuone', 'noselect'}
 
--- Space as leader key
 vim.g.mapleader = ' '
 
 
@@ -49,7 +51,6 @@ local lazy = {}
 
 function lazy.install(path)
   if not vim.loop.fs_stat(path) then
-    print('Installing lazy.nvim....')
     vim.fn.system({
       'git',
       'clone',
@@ -74,14 +75,14 @@ lazy.opts = {}
 
 lazy.setup({
   -- Theming
-  {'folke/tokyonight.nvim'},
-  {'kyazdani42/nvim-web-devicons'},
+  {'folke/tokyonight.nvim', priority = 1000},
+  {'nvim-tree/nvim-web-devicons'},
   {'nvim-lualine/lualine.nvim'},
   {'akinsho/bufferline.nvim'},
   {'lukas-reineke/indent-blankline.nvim'},
 
   -- File explorer
-  {'kyazdani42/nvim-tree.lua'},
+  {'nvim-tree/nvim-tree.lua'},
 
   -- Fuzzy finder
   {'nvim-telescope/telescope.nvim', branch = '0.1.x'},
@@ -128,7 +129,6 @@ lazy.setup({
 ---
 -- Colorscheme
 ---
-vim.opt.termguicolors = true
 vim.cmd.colorscheme('tokyonight-night')
 
 
@@ -141,15 +141,9 @@ vim.keymap.set('n', '<leader>bc', '<cmd>Bdelete<CR>')
 ---
 -- lualine.nvim (statusline)
 ---
-vim.opt.showmode = false
-
--- See :help lualine.txt
 require('lualine').setup({
   options = {
     theme = 'tokyonight',
-    icons_enabled = true,
-    component_separators = '|',
-    section_separators = '',
     disabled_filetypes = {
       statusline = {'NvimTree'},
     },
@@ -160,36 +154,30 @@ require('lualine').setup({
 ---
 -- bufferline
 ---
--- See :help bufferline-settings
 require('bufferline').setup({
   options = {
-    mode = 'buffers',
     offsets = {
       {filetype = 'NvimTree'}
     },
   },
-  -- :help bufferline-highlights
-  highlights = {
-    buffer_selected = {
-      italic = false
-    },
-    indicator_selected = {
-      fg = {attribute = 'fg', highlight = 'Function'},
-      italic = false
-    }
-  }
 })
+
+
+---
+-- NvimTree
+---
+require('nvim-tree').setup({})
+
+vim.keymap.set('n', '<leader>e', '<cmd>NvimTreeToggle<cr>')
 
 
 ---
 -- Treesitter
 ---
--- See :help nvim-treesitter-modules
 require('nvim-treesitter.configs').setup({
   highlight = {
     enable = true,
   },
-  -- :help nvim-treesitter-textobjects-modules
   textobjects = {
     select = {
       enable = true,
@@ -210,7 +198,9 @@ require('nvim-treesitter.configs').setup({
     'vim',
     'vimdoc',
     'css',
-    'json'
+    'json',
+    'ruby',
+    'python',
   },
 })
 
@@ -224,37 +214,20 @@ require('Comment').setup({})
 ---
 -- Indent-blankline
 ---
--- See :help indent-blankline-setup
 require('indent_blankline').setup({
-  char = '▏',
-  show_trailing_blankline_indent = false,
-  show_first_indent_level = false,
   use_treesitter = true,
-  show_current_context = false
 })
 
 
 ---
 -- Gitsigns
 ---
--- See :help gitsigns-usage
-require('gitsigns').setup({
-  signs = {
-    add = {text = '▎'},
-    change = {text = '▎'},
-    delete = {text = '➤'},
-    topdelete = {text = '➤'},
-    changedelete = {text = '▎'},
-  }
-})
+require('gitsigns').setup({})
 
 
 ---
 -- Telescope
 ---
--- See :help telescope.builtin
-vim.keymap.set('n', '<leader>?', '<cmd>Telescope oldfiles<cr>')
-vim.keymap.set('n', '<leader><space>', '<cmd>Telescope buffers<cr>')
 vim.keymap.set('n', '<leader>ff', '<cmd>Telescope find_files<cr>')
 vim.keymap.set('n', '<leader>fg', '<cmd>Telescope live_grep<cr>')
 vim.keymap.set('n', '<leader>fd', '<cmd>Telescope diagnostics<cr>')
@@ -264,46 +237,19 @@ require('telescope').load_extension('fzf')
 
 
 ---
--- nvim-tree (File explorer)
----
--- See :help nvim-tree-setup
-require('nvim-tree').setup({
-  hijack_cursor = false,
-  on_attach = function(bufnr)
-    local bufmap = function(lhs, rhs, desc)
-      vim.keymap.set('n', lhs, rhs, {buffer = bufnr, desc = desc})
-    end
-
-    -- :help nvim-tree.api
-    local api = require('nvim-tree.api')
-
-    bufmap('L', api.node.open.edit, 'Expand folder or go to file')
-    bufmap('H', api.node.navigate.parent_close, 'Close parent folder')
-    bufmap('gh', api.tree.toggle_hidden_filter, 'Toggle hidden files')
-  end
-})
-
-vim.keymap.set('n', '<leader>e', '<cmd>NvimTreeToggle<cr>')
-
-
----
 -- Luasnip (snippet engine)
 ---
--- See :help luasnip-loaders
 require('luasnip.loaders.from_vscode').lazy_load()
 
 
 ---
 -- nvim-cmp (autocomplete)
 ---
-vim.opt.completeopt = {'menu', 'menuone', 'noselect'}
-
 local cmp = require('cmp')
 local luasnip = require('luasnip')
 
 local select_opts = {behavior = cmp.SelectBehavior.Select}
 
--- See :help cmp-config
 cmp.setup({
   snippet = {
     expand = function(args)
@@ -334,7 +280,6 @@ cmp.setup({
       return item
     end,
   },
-  -- See :help cmp-mapping
   mapping = {
     ['<Up>'] = cmp.mapping.select_prev_item(select_opts),
     ['<Down>'] = cmp.mapping.select_next_item(select_opts),
@@ -391,7 +336,6 @@ cmp.setup({
 ---
 -- LSP config
 ---
--- See :help lspconfig-global-defaults
 local lspconfig = require('lspconfig')
 local lsp_defaults = lspconfig.util.default_config
 
@@ -405,7 +349,6 @@ lsp_defaults.capabilities = vim.tbl_deep_extend(
 -- Diagnostic customization
 ---
 local sign = function(opts)
-  -- See :help sign_define()
   vim.fn.sign_define(opts.name, {
     texthl = opts.name,
     text = opts.text,
@@ -418,24 +361,20 @@ sign({name = 'DiagnosticSignWarn', text = '▲'})
 sign({name = 'DiagnosticSignHint', text = '⚑'})
 sign({name = 'DiagnosticSignInfo', text = '»'})
 
--- See :help vim.diagnostic.config()
 vim.diagnostic.config({
   virtual_text = false,
   severity_sort = true,
   float = {
-    border = 'rounded',
     source = 'always',
   },
 })
 
 vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(
-  vim.lsp.handlers.hover,
-  {border = 'rounded'}
+  vim.lsp.handlers.hover
 )
 
 vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
-  vim.lsp.handlers.signature_help,
-  {border = 'rounded'}
+  vim.lsp.handlers.signature_help
 )
 
 ---
@@ -443,15 +382,11 @@ vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
 ---
 vim.api.nvim_create_autocmd('LspAttach', {
   group = group,
-  desc = 'LSP actions',
   callback = function()
     local bufmap = function(mode, lhs, rhs)
       local opts = {buffer = true}
       vim.keymap.set(mode, lhs, rhs, opts)
     end
-
-    -- You can search each function in the help page.
-    -- For example :help vim.lsp.buf.hover()
 
     bufmap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>')
     bufmap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>')
@@ -473,12 +408,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 ---
 -- LSP servers
 ---
--- See :help mason-settings
-require('mason').setup({
-  ui = {border = 'rounded'}
-})
-
--- See :help mason-lspconfig-settings
+require('mason').setup({})
 require('mason-lspconfig').setup({
   ensure_installed = {
     'tsserver',
@@ -486,20 +416,9 @@ require('mason-lspconfig').setup({
     'html',
     'cssls'
   },
-  -- See :help mason-lspconfig.setup_handlers()
   handlers = {
     function(server)
-      -- See :help lspconfig-setup
       lspconfig[server].setup({})
-    end,
-    ['tsserver'] = function()
-      lspconfig.tsserver.setup({
-        settings = {
-          completions = {
-            completeFunctionCalls = true
-          }
-        }
-      })
     end,
   }
 })
