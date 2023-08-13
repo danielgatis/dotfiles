@@ -1,6 +1,4 @@
--- ========================================================================== --
--- ==                           EDITOR SETTINGS                            == --
--- ========================================================================== --
+-- Settings
 
 vim.opt.number = true
 vim.opt.mouse = 'a'
@@ -17,80 +15,48 @@ vim.opt.showmode = false
 vim.opt.termguicolors = true
 vim.opt.completeopt = {'menu', 'menuone', 'noselect'}
 
+-- Keymaps
+
 vim.g.mapleader = ' '
 
+vim.keymap.set('n', '<leader>ff', '<cmd>Telescope find_files<cr>')
+vim.keymap.set('n', '<leader>fg', '<cmd>Telescope live_grep<cr>')
+vim.keymap.set('n', '<leader>fd', '<cmd>Telescope diagnostics<cr>')
+vim.keymap.set('n', '<leader>fs', '<cmd>Telescope current_buffer_fuzzy_find<cr>')
+vim.keymap.set('n', '<leader>e', '<cmd>NvimTreeToggle<cr>')
 
--- ========================================================================== --
--- ==                               COMMANDS                               == --
--- ========================================================================== --
+-- Plugins
 
-vim.api.nvim_create_user_command('ReloadConfig', 'source $MYVIMRC', {})
-
-local group = vim.api.nvim_create_augroup('user_cmds', {clear = true})
-
-vim.api.nvim_create_autocmd('TextYankPost', {
-  desc = 'Highlight on yank',
-  group = group,
-  callback = function()
-    vim.highlight.on_yank({higroup = 'Visual', timeout = 200})
-  end,
-})
-
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = {'help', 'man'},
-  group = group,
-  command = 'nnoremap <buffer> q <cmd>quit<cr>'
-})
-
-
--- ========================================================================== --
--- ==                               PLUGINS                                == --
--- ========================================================================== --
-
-local lazy = {}
-
-function lazy.install(path)
-  if not vim.loop.fs_stat(path) then
-    vim.fn.system({
-      'git',
-      'clone',
-      '--filter=blob:none',
-      'https://github.com/folke/lazy.nvim.git',
-      '--branch=stable', -- latest stable release
-      path,
-    })
-  end
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable",
+    lazypath,
+  })
 end
+vim.opt.rtp:prepend(lazypath)
 
-function lazy.setup(plugins)
-  -- You can "comment out" the line below after lazy.nvim is installed
-  lazy.install(lazy.path)
-
-  vim.opt.rtp:prepend(lazy.path)
-  require('lazy').setup(plugins, lazy.opts)
-end
-
-lazy.path = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
-lazy.opts = {}
-
-lazy.setup({
+require('lazy').setup({
   -- Theming
-  {'folke/tokyonight.nvim', priority = 1000},
+  {'folke/tokyonight.nvim'},
   {'nvim-tree/nvim-web-devicons'},
   {'nvim-lualine/lualine.nvim'},
   {'akinsho/bufferline.nvim'},
-  {'lukas-reineke/indent-blankline.nvim'},
 
-  -- File explorer
+  -- File Navigation
   {'nvim-tree/nvim-tree.lua'},
-
-  -- Fuzzy finder
-  {'nvim-telescope/telescope.nvim', branch = '0.1.x'},
-  {'nvim-telescope/telescope-fzf-native.nvim', build = 'make'},
-
-  -- Git
-  {'lewis6991/gitsigns.nvim'},
-  {'tpope/vim-fugitive'},
+  {
+    'nvim-telescope/telescope.nvim',
+    branch = '0.1.x',
+    dependencies = {
+      {'nvim-telescope/telescope-fzf-native.nvim', build = 'make'},
+      {'nvim-lua/plenary.nvim'},
+    }
+  },
 
   -- Code manipulation
   {'nvim-treesitter/nvim-treesitter'},
@@ -101,59 +67,88 @@ lazy.setup({
   {'tpope/vim-repeat'},
 
   -- Utilities
-  {'moll/vim-bbye'},
-  {'nvim-lua/plenary.nvim'},
+  {'RRethy/nvim-treesitter-endwise'},
+  {
+    'VonHeikemen/lsp-zero.nvim',
+    branch = 'v2.x',
+    dependencies = {
+      -- LSP Support
+      {'neovim/nvim-lspconfig'},
+      {'williamboman/mason.nvim'},
+      {'williamboman/mason-lspconfig.nvim'},
 
-  -- LSP support
-  {'neovim/nvim-lspconfig'},
-  {'williamboman/mason.nvim'},
-  {'williamboman/mason-lspconfig.nvim'},
+      -- Autocompletion
+		  {'hrsh7th/nvim-cmp'},
+		  {'hrsh7th/cmp-buffer'},
+		  {'hrsh7th/cmp-path'},
+		  {'hrsh7th/cmp-nvim-lsp'},
+      {'saadparwaiz1/cmp_luasnip'},
+      {
+        'zbirenbaum/copilot-cmp',
+        dependencies = {
+          {'zbirenbaum/copilot.lua'},
+        },
+      },
 
-  -- Autocomplete
-  {'hrsh7th/nvim-cmp'},
-  {'hrsh7th/cmp-buffer'},
-  {'hrsh7th/cmp-path'},
-  {'saadparwaiz1/cmp_luasnip'},
-  {'hrsh7th/cmp-nvim-lsp'},
-
-  -- Snippets
-  {'L3MON4D3/LuaSnip'},
-  {'rafamadriz/friendly-snippets'},
+      -- Snippets
+		  {'L3MON4D3/LuaSnip'},
+		  {'rafamadriz/friendly-snippets'},
+    },
+  },
 })
 
+-- nvim-tree
+require('nvim-tree').setup({})
 
--- ========================================================================== --
--- ==                         PLUGIN CONFIGURATION                         == --
--- ========================================================================== --
+-- comment
+require('Comment').setup({})
 
----
--- Colorscheme
----
-vim.cmd.colorscheme('tokyonight-night')
+-- telescope
+require('telescope').load_extension('fzf')
 
+-- luasnip
+require('luasnip.loaders.from_vscode').lazy_load()
 
----
--- vim-bbye
----
-vim.keymap.set('n', '<leader>bc', '<cmd>Bdelete<CR>')
+-- copilot
+require('copilot').setup({
+  suggestion = { enabled = false },
+  panel = { enabled = false },
+})
 
+require('copilot_cmp').setup()
 
----
--- lualine.nvim (statusline)
----
+-- endwise
+require('nvim-treesitter.configs').setup {
+  endwise = { enable = true },
+}
+
+-- tokyonight
+require('tokyonight').setup({
+  style = 'night',
+  transparent = true,
+  dim_inactive = true,
+  styles = {
+    sidebars = 'transparent',
+    floats = 'transparent',
+  },
+})
+
+vim.cmd.colorscheme('tokyonight')
+
+-- lualine
+local theme = require('lualine.themes.tokyonight')
+theme.normal.c.bg = 'none'
+
 require('lualine').setup({
   options = {
-    theme = 'tokyonight',
+    theme = theme,
     disabled_filetypes = {
       statusline = {'NvimTree'},
     },
   },
 })
 
-
----
 -- bufferline
----
 require('bufferline').setup({
   options = {
     offsets = {
@@ -162,21 +157,19 @@ require('bufferline').setup({
   },
 })
 
-
----
--- NvimTree
----
-require('nvim-tree').setup({})
-
-vim.keymap.set('n', '<leader>e', '<cmd>NvimTreeToggle<cr>')
-
-
----
--- Treesitter
----
+-- nvim-treesitter
 require('nvim-treesitter.configs').setup({
   highlight = {
     enable = true,
+  },
+  incremental_selection = {
+    enable = true,
+    keymaps = {
+      init_selection = '<cr>',
+			node_incremental = '<cr>',
+			scope_incremental = '<tab>',
+			node_decremental = '<s-tab>',
+		},
   },
   textobjects = {
     select = {
@@ -204,221 +197,51 @@ require('nvim-treesitter.configs').setup({
   },
 })
 
-
----
--- Comment.nvim
----
-require('Comment').setup({})
-
-
----
--- Indent-blankline
----
-require('indent_blankline').setup({
-  use_treesitter = true,
+-- lsp-zero
+require('mason').setup({})
+require('mason-lspconfig').setup({
+  automatic_installation = true,
+  ensure_installed = {
+    'tsserver',
+    'eslint',
+    'html',
+    'cssls',
+    'solargraph',
+  },
 })
 
+local lsp = require('lsp-zero').preset({})
+lsp.preset('recommended')
+lsp.nvim_workspace()
 
----
--- Gitsigns
----
-require('gitsigns').setup({})
+lsp.on_attach(function(client, bufnr)
+  lsp.default_keymaps({buffer = bufnr})
+end)
 
+require('lspconfig').lua_ls.setup(lsp.nvim_lua_ls())
 
----
--- Telescope
----
-vim.keymap.set('n', '<leader>ff', '<cmd>Telescope find_files<cr>')
-vim.keymap.set('n', '<leader>fg', '<cmd>Telescope live_grep<cr>')
-vim.keymap.set('n', '<leader>fd', '<cmd>Telescope diagnostics<cr>')
-vim.keymap.set('n', '<leader>fs', '<cmd>Telescope current_buffer_fuzzy_find<cr>')
-
-require('telescope').load_extension('fzf')
-
-
----
--- Luasnip (snippet engine)
----
-require('luasnip.loaders.from_vscode').lazy_load()
-
-
----
--- nvim-cmp (autocomplete)
----
 local cmp = require('cmp')
-local luasnip = require('luasnip')
+local cmp_action = require('lsp-zero').cmp_action()
+local cmp_mappings = lsp.defaults.cmp_mappings({
+  ['<tab>'] = cmp_action.luasnip_supertab(),
+  ['<s-tab>'] = cmp_action.luasnip_shift_supertab(),
+  ['<cr>'] = cmp.mapping.confirm(),
+  ['<c-space>'] = cmp.mapping.complete(),
+})
 
-local select_opts = {behavior = cmp.SelectBehavior.Select}
+lsp.setup_nvim_cmp({
+  mapping = cmp_mappings
+})
+
+lsp.setup()
 
 cmp.setup({
-  snippet = {
-    expand = function(args)
-      luasnip.lsp_expand(args.body)
-    end
-  },
   sources = {
     {name = 'path'},
     {name = 'nvim_lsp'},
     {name = 'buffer', keyword_length = 3},
     {name = 'luasnip', keyword_length = 2},
-  },
-  window = {
-    completion = cmp.config.window.bordered(),
-    documentation = cmp.config.window.bordered(),
-  },
-  formatting = {
-    fields = {'menu', 'abbr', 'kind'},
-    format = function(entry, item)
-      local menu_icon = {
-        nvim_lsp = 'λ',
-        luasnip = '⋗',
-        buffer = 'Ω',
-        path = '🖫',
-      }
-
-      item.menu = menu_icon[entry.source.name]
-      return item
-    end,
-  },
-  mapping = {
-    ['<Up>'] = cmp.mapping.select_prev_item(select_opts),
-    ['<Down>'] = cmp.mapping.select_next_item(select_opts),
-
-    ['<C-p>'] = cmp.mapping.select_prev_item(select_opts),
-    ['<C-n>'] = cmp.mapping.select_next_item(select_opts),
-
-    ['<C-u>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-d>'] = cmp.mapping.scroll_docs(4),
-
-    ['<C-e>'] = cmp.mapping.abort(),
-    ['<C-y>'] = cmp.mapping.confirm({select = true}),
-    ['<CR>'] = cmp.mapping.confirm({select = false}),
-
-    ['<C-f>'] = cmp.mapping(function(fallback)
-      if luasnip.jumpable(1) then
-        luasnip.jump(1)
-      else
-        fallback()
-      end
-    end, {'i', 's'}),
-
-    ['<C-b>'] = cmp.mapping(function(fallback)
-      if luasnip.jumpable(-1) then
-        luasnip.jump(-1)
-      else
-        fallback()
-      end
-    end, {'i', 's'}),
-
-    ['<Tab>'] = cmp.mapping(function(fallback)
-      local col = vim.fn.col('.') - 1
-
-      if cmp.visible() then
-        cmp.select_next_item(select_opts)
-      elseif col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
-        fallback()
-      else
-        cmp.complete()
-      end
-    end, {'i', 's'}),
-
-    ['<S-Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item(select_opts)
-      else
-        fallback()
-      end
-    end, {'i', 's'}),
-  },
-})
-
-
----
--- LSP config
----
-local lspconfig = require('lspconfig')
-local lsp_defaults = lspconfig.util.default_config
-
-lsp_defaults.capabilities = vim.tbl_deep_extend(
-  'force',
-  lsp_defaults.capabilities,
-  require('cmp_nvim_lsp').default_capabilities()
-)
-
----
--- Diagnostic customization
----
-local sign = function(opts)
-  vim.fn.sign_define(opts.name, {
-    texthl = opts.name,
-    text = opts.text,
-    numhl = ''
-  })
-end
-
-sign({name = 'DiagnosticSignError', text = '✘'})
-sign({name = 'DiagnosticSignWarn', text = '▲'})
-sign({name = 'DiagnosticSignHint', text = '⚑'})
-sign({name = 'DiagnosticSignInfo', text = '»'})
-
-vim.diagnostic.config({
-  virtual_text = false,
-  severity_sort = true,
-  float = {
-    source = 'always',
-  },
-})
-
-vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(
-  vim.lsp.handlers.hover
-)
-
-vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
-  vim.lsp.handlers.signature_help
-)
-
----
--- LSP Keybindings
----
-vim.api.nvim_create_autocmd('LspAttach', {
-  group = group,
-  callback = function()
-    local bufmap = function(mode, lhs, rhs)
-      local opts = {buffer = true}
-      vim.keymap.set(mode, lhs, rhs, opts)
-    end
-
-    bufmap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>')
-    bufmap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>')
-    bufmap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<cr>')
-    bufmap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<cr>')
-    bufmap('n', 'go', '<cmd>lua vim.lsp.buf.type_definition()<cr>')
-    bufmap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<cr>')
-    bufmap('n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<cr>')
-    bufmap('n', '<F2>', '<cmd>lua vim.lsp.buf.rename()<cr>')
-    bufmap({'n', 'x'}, '<F3>', '<cmd>lua vim.lsp.buf.format({async = true})<cr>')
-    bufmap('n', '<F4>', '<cmd>lua vim.lsp.buf.code_action()<cr>')
-    bufmap('n', 'gl', '<cmd>lua vim.diagnostic.open_float()<cr>')
-    bufmap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<cr>')
-    bufmap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<cr>')
-  end
-})
-
-
----
--- LSP servers
----
-require('mason').setup({})
-require('mason-lspconfig').setup({
-  ensure_installed = {
-    'tsserver',
-    'eslint',
-    'html',
-    'cssls'
-  },
-  handlers = {
-    function(server)
-      lspconfig[server].setup({})
-    end,
+    {name = 'copilot', keyword_length = 0},
   }
 })
+
