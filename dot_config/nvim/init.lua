@@ -18,22 +18,22 @@ vim.opt.termguicolors = true
 
 vim.g.mapleader = ' '
 
-vim.keymap.set('n', '<leader>ff', '<cmd>Telescope find_files<CR>')
-vim.keymap.set('n', '<leader>fg', '<cmd>Telescope live_grep<CR>')
-vim.keymap.set('n', '<leader>fd', '<cmd>Telescope diagnostics<CR>')
-vim.keymap.set('n', '<leader>fs', '<cmd>Telescope current_buffer_fuzzy_find<CR>')
-vim.keymap.set('n', '<leader>e', '<cmd>NvimTreeToggle<CR>')
+vim.keymap.set('n', '<c-p>', '<cmd>Telescope find_files<CR>')
+vim.keymap.set('n', '<c-;>', '<cmd>Telescope live_grep<CR>')
+vim.keymap.set('n', '<leader>e', '<cmd>NvimTreeFindFileToggle<CR>')
+vim.keymap.set('n', '<leader>dd', function() require('duck').hatch() end, {})
+vim.keymap.set('n', '<leader>dk', function() require('duck').cook() end, {})
 
 -- Plugins
 
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
 	vim.fn.system({
-		"git",
-		"clone",
-		"--filter=blob:none",
-		"https://github.com/folke/lazy.nvim.git",
-		"--branch=stable",
+		'git',
+		'clone',
+		'--filter=blob:none',
+		'https://github.com/folke/lazy.nvim.git',
+		'--branch=stable',
 		lazypath,
 	})
 end
@@ -60,15 +60,24 @@ require('lazy').setup({
 	{ 'rafamadriz/friendly-snippets' },
 	{ 'RRethy/nvim-treesitter-endwise' },
 	{ 'saadparwaiz1/cmp_luasnip' },
+	{ 'tamton-aquib/duck.nvim' },
 	{ 'tpope/vim-repeat' },
 	{ 'tpope/vim-surround' },
 	{ 'VonHeikemen/lsp-zero.nvim',                  branch = 'v2.x', },
 	{ 'wellle/targets.vim' },
 	{ 'williamboman/mason-lspconfig.nvim' },
 	{ 'williamboman/mason.nvim' },
-	{ 'zbirenbaum/copilot-cmp' },
-	{ 'zbirenbaum/copilot.lua' },
+    { 'folke/trouble.nvim' },
+}, {
+	install = {
+		colorscheme = {
+			'tokyonight',
+		},
+	},
 })
+
+-- trouble
+require('trouble').setup({})
 
 -- nvim-tree
 require('nvim-tree').setup({})
@@ -77,18 +86,15 @@ require('nvim-tree').setup({})
 require('Comment').setup({})
 
 -- telescope
+require('telescope').setup({
+	defaults = {
+		preview = false,
+	},
+})
 require('telescope').load_extension('fzf')
 
 -- luasnip
 require('luasnip.loaders.from_vscode').lazy_load()
-
--- copilot
-require('copilot').setup({
-	suggestion = { enabled = false },
-	panel = { enabled = false },
-})
-
-require('copilot_cmp').setup()
 
 -- endwise
 require('nvim-treesitter.configs').setup {
@@ -188,6 +194,8 @@ lsp.preset('recommended')
 lsp.nvim_workspace()
 lsp.on_attach(function(client, bufnr)
 	lsp.default_keymaps({ buffer = bufnr })
+	vim.keymap.set('n', 'gQ', '<cmd>lua vim.lsp.buf.format({async = true})<cr>', {buffer = true})
+	vim.keymap.set('n', 'gq', '<cmd>lua vim.lsp.buf.code_action()<cr>', {buffer = true})
 end)
 lsp.setup()
 
@@ -197,14 +205,11 @@ cmp.setup({
 	mapping = {
 		['<Tab>'] = cmp_action.luasnip_supertab(),
 		['<S-Tab>'] = cmp_action.luasnip_shift_supertab(),
-		['<CR>'] = cmp.mapping.confirm({ select = false }),
-		['<C-Space>'] = cmp.mapping.complete(),
 	},
 	sources = {
 		{ name = 'nvim_lsp' },
 		{ name = 'path' },
 		{ name = 'buffer' },
 		{ name = 'luasnip' },
-		{ name = 'copilot' },
 	}
 })
