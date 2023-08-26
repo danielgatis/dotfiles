@@ -11,7 +11,6 @@ env:
   TERM: "xterm-256color"
 
 window:
-  opacity: .95
   option_as_alt: OnlyLeft
   decorations: buttonless
   padding:
@@ -104,6 +103,7 @@ key_bindings:
   # disable search shortcuts
   - { key: F,          mods: Command,          action: ReceiveChar                           }
   - { key: B,          mods: Command,          action: ReceiveChar                           }
+
 
 # TokyoNight Alacritty Colors
 colors:

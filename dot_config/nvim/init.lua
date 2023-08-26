@@ -67,14 +67,18 @@ require('lazy').setup({
 	{ 'wellle/targets.vim' },
 	{ 'williamboman/mason-lspconfig.nvim' },
 	{ 'williamboman/mason.nvim' },
-    { 'folke/trouble.nvim' },
+  { 'sunaku/tmux-navigate', lazy = false },
+  { 'folke/trouble.nvim' },
 }, {
 	install = {
 		colorscheme = {
-			'tokyonight',
+			'tokyonight-night',
 		},
 	},
 })
+
+-- tokyonight
+vim.cmd('colorscheme tokyonight-night')
 
 -- trouble
 require('trouble').setup({})
@@ -101,29 +105,10 @@ require('nvim-treesitter.configs').setup {
 	endwise = { enable = true },
 }
 
--- tokyonight
-require('tokyonight').setup({
-	style = 'night',
-	transparent = true,
-	dim_inactive = true,
-	styles = {
-		sidebars = 'transparent',
-		floats = 'transparent',
-	},
-})
-
-vim.cmd.colorscheme('tokyonight')
-
 -- lualine
-local theme = require('lualine.themes.tokyonight')
-theme.normal.c.bg = 'none'
-
 require('lualine').setup({
 	options = {
-		theme = theme,
-		disabled_filetypes = {
-			statusline = { 'NvimTree' },
-		},
+		theme = 'tokyonight'
 	},
 })
 
