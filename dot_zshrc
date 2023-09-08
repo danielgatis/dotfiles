@@ -31,6 +31,7 @@ alias vim="nvim"
 alias cop="git add -N .; git diff --name-only | grep '.rb\|.rake' | grep -v .erb | grep -v 'db/schema.rb' | xargs rubocop -A"
 alias spec='bin/rspec $(git ls-files --modified --others spec | grep -v factories)'
 alias rspec='bin/rspec'
+alias idea='open -na "IntelliJ IDEA CE.app"'
 
 # Zplug
 export ZPLUG_HOME=/opt/homebrew/opt/zplug
