@@ -18,11 +18,18 @@ vim.opt.termguicolors = true
 
 vim.g.mapleader = ' '
 
-vim.keymap.set('n', '<c-p>', '<cmd>Telescope find_files<CR>')
-vim.keymap.set('n', '<c-;>', '<cmd>Telescope live_grep<CR>')
-vim.keymap.set('n', '<leader>e', '<cmd>NvimTreeFindFileToggle<CR>')
+vim.keymap.set('n', '<c-p>', '<cmd>Telescope find_files<cr>')
+vim.keymap.set('n', '<c-s-p>', '<cmd>Telescope live_grep<cr>')
+vim.keymap.set('n', '<leader>e', '<cmd>NvimTreeFindFileToggle<cr>')
 vim.keymap.set('n', '<leader>dd', function() require('duck').hatch() end, {})
 vim.keymap.set('n', '<leader>dk', function() require('duck').cook() end, {})
+vim.keymap.set('n', '<leader>S', '<cmd>lua require("spectre").toggle()<cr>')
+vim.keymap.set('n', '<leader>sw', '<cmd>lua require("spectre").open_visual({select_word=true})<cr>')
+vim.keymap.set('v', '<leader>sw', '<esc><cmd>lua require("spectre").open_visual()<cr>')
+vim.keymap.set('n', '<leader>sp', '<cmd>lua require("spectre").open_file_search({select_word=true})<cr>')
+vim.keymap.set('n', '<m-tab>', '<cmd>BufferLineCycleNext<cr>')
+vim.keymap.set('n', '<m-s-tab>', '<cmd>BufferLineCyclePrev<cr>')
+vim.keymap.set('n', '<m-q>', '<cmd>lua require("bufdelete").bufdelete(0, true)<cr>')
 
 -- Plugins
 
@@ -51,8 +58,8 @@ require('lazy').setup({
 	{ 'numToStr/Comment.nvim' },
 	{ 'nvim-lua/plenary.nvim' },
 	{ 'nvim-lualine/lualine.nvim' },
-	{ 'nvim-telescope/telescope-fzf-native.nvim',   build = 'make' },
-	{ 'nvim-telescope/telescope.nvim',              branch = '0.1.x', },
+	{ 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
+	{ 'nvim-telescope/telescope.nvim', branch = '0.1.x', },
 	{ 'nvim-tree/nvim-tree.lua' },
 	{ 'nvim-tree/nvim-web-devicons' },
 	{ 'nvim-treesitter/nvim-treesitter-textobjects' },
@@ -63,12 +70,16 @@ require('lazy').setup({
 	{ 'tamton-aquib/duck.nvim' },
 	{ 'tpope/vim-repeat' },
 	{ 'tpope/vim-surround' },
-	{ 'VonHeikemen/lsp-zero.nvim',                  branch = 'v2.x', },
+	{ 'VonHeikemen/lsp-zero.nvim', branch = 'v2.x', },
 	{ 'wellle/targets.vim' },
 	{ 'williamboman/mason-lspconfig.nvim' },
 	{ 'williamboman/mason.nvim' },
-  { 'sunaku/tmux-navigate', lazy = false },
+  { 'famiu/bufdelete.nvim' },
   { 'folke/trouble.nvim' },
+  { 'github/copilot.vim' },
+  { 'mg979/vim-visual-multi', branch = 'master' },
+  { 'nvim-pack/nvim-spectre' },
+  { 'sunaku/tmux-navigate', lazy = false },
 }, {
 	install = {
 		colorscheme = {
@@ -129,10 +140,10 @@ require('nvim-treesitter.configs').setup({
 	incremental_selection = {
 		enable = true,
 		keymaps = {
-			init_selection = '<CR>',
-			node_incremental = '<CR>',
-			scope_incremental = '<Tab>',
-			node_decremental = '<S-Tab>',
+			init_selection = '<cr>',
+			node_incremental = '<cr>',
+			scope_incremental = '<tab>',
+			node_decremental = '<s-tab>',
 		},
 	},
 	textobjects = {
@@ -188,8 +199,8 @@ local cmp = require('cmp')
 local cmp_action = require('lsp-zero').cmp_action()
 cmp.setup({
 	mapping = {
-		['<Tab>'] = cmp_action.luasnip_supertab(),
-		['<S-Tab>'] = cmp_action.luasnip_shift_supertab(),
+		['<tab>'] = cmp_action.luasnip_supertab(),
+		['<s-tab>'] = cmp_action.luasnip_shift_supertab(),
 	},
 	sources = {
 		{ name = 'nvim_lsp' },
