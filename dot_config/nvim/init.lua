@@ -244,6 +244,7 @@ require("nvim-treesitter.configs").setup({
     "json",
     "ruby",
     "python",
+    "go",
   },
 })
 
@@ -299,6 +300,7 @@ require("mason-lspconfig").setup({
     "html",
     "cssls",
     "solargraph",
+    "gopls",
   },
   handlers = {
     lsp_zero.default_setup,
