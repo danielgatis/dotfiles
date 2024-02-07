@@ -58,9 +58,9 @@ export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
 # Compile flags
 export optflags="-Wno-error=implicit-function-declaration"
-export LDFLAGS="-L/opt/homebrew/opt/libffi/lib"
-export CPPFLAGS="-I/opt/homebrew/opt/libffi/include"
-export PKG_CONFIG_PATH="/opt/homebrew/opt/libffi/lib/pkgconfig"
+export LDFLAGS="-L/opt/homebrew/opt/libffi/lib -L/opt/homebrew/opt/postgresql@13/lib"
+export CPPFLAGS="-I/opt/homebrew/opt/libffi/include -I/opt/homebrew/opt/postgresql@13/include"
+export PKG_CONFIG_PATH="/opt/homebrew/opt/libffi/lib/pkgconfig:/opt/homebrew/opt/postgresql@13/lib/pkgconfig"
 export LIBRARY_PATH=$LIBRARY_PATH:/opt/homebrew/opt/openssl/lib/
 export PYTHON_CONFIGURE_OPTS="--enable-framework"
 
@@ -78,5 +78,6 @@ export SDKMAN_DIR="$HOME/.sdkman"
 export EDITOR=nvim
 export LANG="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
-export PATH="$HOME/.local/bin:$PATH"
 export TMUXP_CONFIGDIR="$HOME/tmuxp"
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="/opt/homebrew/opt/postgresql@13/bin:$PATH"

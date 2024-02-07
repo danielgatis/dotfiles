@@ -32,6 +32,8 @@ font:
 key_bindings:
   - { key: N,          mods: Command,          action: CreateNewWindow                       }
   - { key: Q,          mods: Command,          action: Quit                                  }
+  - { key: Return,     mods: Shift,            chars: "\x1b[13;2u"                           }
+  - { key: Return,     mods: Control,          chars: "\x1b[13;5u"                           }
   - { key: Space,      mods: Control,          chars: "\x00"                                 }
   - { key: Grave,      mods: Alt,              chars: "\x1b`"                                }
   - { key: Grave,      mods: Alt|Shift,        chars: "\x1b~"                                }

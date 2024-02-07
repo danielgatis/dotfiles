@@ -16,6 +16,8 @@ vim.opt.termguicolors = true
 
 -- Keymaps
 vim.g.mapleader = " "
+vim.g.copilot_no_tab_map = true
+
 vim.keymap.set("n", "<c-p>", "<cmd>Telescope find_files hidden=true no_ignore=true<cr>")
 vim.keymap.set("n", "<c-s-p>", "<cmd>Telescope live_grep<cr>")
 vim.keymap.set("n", "<leader>e", "<cmd>NvimTreeFindFileToggle<cr>")
@@ -43,6 +45,15 @@ vim.keymap.set(
   "<leader>gb",
   '<cmd>lua require"gitlinker".get_buf_range_url("v", {action_callback = require"gitlinker.actions".open_in_browser})<cr>',
   { silent = true }
+)
+vim.keymap.set(
+  'i',
+  '<c-cr>',
+  'copilot#Accept("\\<cr>")',
+  {
+    expr = true,
+    replace_keycodes = false
+  }
 )
 
 -- Global Variables
@@ -97,9 +108,9 @@ require("lazy").setup({
   { "wellle/targets.vim" },
   { "williamboman/mason-lspconfig.nvim" },
   { "williamboman/mason.nvim", lazy = false, config = true },
-  { "zbirenbaum/copilot.lua", cmd = "Copilot", event = "InsertEnter" },
+  { "github/copilot.vim" },
   { "APZelos/blamer.nvim" },
-  { "L3MON4D3/LuaSnip" },
+  { "L3MON4D3/LuaSnip", version = "v2.*", build = "make install_jsregexp" },
   { "mfussenegger/nvim-lint" },
   { "ruifm/gitlinker.nvim" },
   { "stevearc/conform.nvim" },
@@ -140,11 +151,11 @@ require("conform").setup({
 -- lint
 local lint = require("lint")
 lint.linters_by_ft = {
-  javascript = { "eslint_d" },
-  typescript = { "eslint_d" },
-  typescriptreact = { "eslint_d" },
-  javascriptreact = { "eslint_d" },
-  html = { "eslint_d" },
+  javascript = { "eslint_d", "eslint" },
+  typescript = { "eslint_d", "eslint" },
+  typescriptreact = { "eslint_d", "eslint" },
+  javascriptreact = { "eslint_d", "eslint" },
+  html = { "eslint_d", "eslint" },
   css = { "stylelint" },
   json = { "jsonlint" },
   yaml = { "yamllint" },
@@ -158,15 +169,6 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave", "TextCh
   callback = function()
     lint.try_lint()
   end,
-})
-
--- copilot
-require("copilot").setup({
-  panel = { enabled = false },
-  suggestion = {
-    enabled = true,
-    auto_trigger = true,
-  },
 })
 
 -- trouble
@@ -262,14 +264,6 @@ end)
 local cmp = require("cmp")
 local cmp_format = require("lsp-zero").cmp_format()
 local cmp_action = require("lsp-zero").cmp_action()
-
-cmp.event:on("menu_opened", function()
-  vim.b.copilot_suggestion_hidden = true
-end)
-
-cmp.event:on("menu_closed", function()
-  vim.b.copilot_suggestion_hidden = false
-end)
 
 cmp.setup({
   formatting = cmp_format,
