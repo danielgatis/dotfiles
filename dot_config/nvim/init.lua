@@ -15,18 +15,11 @@ vim.opt.showmode = false
 vim.opt.termguicolors = true
 
 -- Keymaps
-vim.g.mapleader = " "
-vim.g.copilot_no_tab_map = true
-
 vim.keymap.set("n", "<c-p>", "<cmd>Telescope find_files hidden=true no_ignore=true<cr>")
 vim.keymap.set("n", "<c-s-p>", "<cmd>Telescope live_grep<cr>")
 vim.keymap.set("n", "<leader>e", "<cmd>NvimTreeFindFileToggle<cr>")
-vim.keymap.set("n", "<leader>dd", function()
-  require("duck").hatch()
-end, {})
-vim.keymap.set("n", "<leader>dk", function()
-  require("duck").cook()
-end, {})
+vim.keymap.set("n", "<leader>dd", function() require("duck").hatch() end, {})
+vim.keymap.set("n", "<leader>dk", function() require("duck").cook() end, {})
 vim.keymap.set("n", "<leader>S", '<cmd>lua require("spectre").toggle()<cr>')
 vim.keymap.set("n", "<leader>sw", '<cmd>lua require("spectre").open_visual({select_word=true})<cr>')
 vim.keymap.set("v", "<leader>sw", '<esc><cmd>lua require("spectre").open_visual()<cr>')
@@ -34,30 +27,13 @@ vim.keymap.set("n", "<leader>sp", '<cmd>lua require("spectre").open_file_search(
 vim.keymap.set("n", "<m-tab>", "<cmd>BufferLineCycleNext<cr>")
 vim.keymap.set("n", "<m-s-tab>", "<cmd>BufferLineCyclePrev<cr>")
 vim.keymap.set("n", "<m-q>", '<cmd>lua require("bufdelete").bufdelete(0, true)<cr>')
-vim.keymap.set(
-  "n",
-  "<leader>gb",
-  '<cmd>lua require"gitlinker".get_buf_range_url("n", {action_callback = require"gitlinker.actions".open_in_browser})<cr>',
-  { silent = true }
-)
-vim.keymap.set(
-  "v",
-  "<leader>gb",
-  '<cmd>lua require"gitlinker".get_buf_range_url("v", {action_callback = require"gitlinker.actions".open_in_browser})<cr>',
-  { silent = true }
-)
-vim.keymap.set(
-  'i',
-  '<c-cr>',
-  'copilot#Accept("\\<cr>")',
-  {
-    expr = true,
-    replace_keycodes = false
-  }
-)
+vim.keymap.set("n", "<leader>gb", '<cmd>lua require"gitlinker".get_buf_range_url("n", {action_callback = require"gitlinker.actions".open_in_browser})<cr>', { silent = true })
+vim.keymap.set("v", "<leader>gb", '<cmd>lua require"gitlinker".get_buf_range_url("v", {action_callback = require"gitlinker.actions".open_in_browser})<cr>', { silent = true })
+vim.keymap.set("i", "<c-cr>", 'copilot#Accept("\\<cr>")', { expr = true, replace_keycodes = false })
 
 -- Global Variables
-
+vim.g.mapleader = " "
+vim.g.copilot_no_tab_map = true
 vim.g.lsp_zero_extend_cmp = 0
 vim.g.lsp_zero_extend_lspconfig = 0
 vim.g.blamer_enabled = 1
