@@ -1,5 +1,4 @@
 -- Settings
-
 vim.opt.number = true
 vim.opt.mouse = "a"
 vim.opt.ignorecase = true
@@ -39,42 +38,36 @@ vim.keymap.set("n", "tt", "<cmd>:Other<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>e", "<cmd>NvimTreeToggle<cr>", { noremap = true, silent = true })
 
 -- Plugins
-
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable",
-    lazypath,
-  })
+  vim.fn.system({"git", "clone", "--filter=blob:none", "https://github.com/folke/lazy.nvim.git", "--branch=stable", lazypath })
 end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-  { "akinsho/bufferline.nvim" },
+  { "akinsho/bufferline.nvim", opts = { options = { offsets = { { filetype = "NvimTree" } } } } },
   { "APZelos/blamer.nvim" },
   { "famiu/bufdelete.nvim" },
   { "folke/tokyonight.nvim" },
-  { "folke/trouble.nvim" },
+  { "folke/trouble.nvim", opts = {} },
   { "github/copilot.vim" },
   { "hrsh7th/cmp-buffer" },
   { "hrsh7th/cmp-nvim-lsp" },
   { "hrsh7th/cmp-path" },
   { "hrsh7th/nvim-cmp", event = "InsertEnter" },
-  { "ibhagwan/fzf-lua" },
+  { "ibhagwan/fzf-lua", opts = { winopts = { preview = {  hidden = 'hidden' } }, file_ignore_patterns = { 'node_modules/.*', 'vendor/.*', 'tmp/.*', '.git/.*' } } },
+  { "ibhagwan/smartyank.nvim", opts = {  highlight = { timeout = 200 } } },
+  { "j-hui/fidget.nvim", version = "v1.*", opts = {} },
   { "L3MON4D3/LuaSnip", version = "v2.*", build = "make install_jsregexp" },
   { "mfussenegger/nvim-lint" },
   { "mg979/vim-visual-multi", branch = "master" },
+  { "michaeljsmith/vim-indent-object" },
   { "neovim/nvim-lspconfig", cmd = { "LspInfo", "LspInstall", "LspStart" }, event = { "BufReadPre", "BufNewFile" } },
-  { "numToStr/Comment.nvim" },
+  { "numToStr/Comment.nvim", opts = {} },
   { "nvim-lua/plenary.nvim" },
-  { "nvim-lualine/lualine.nvim" },
-  { "nvim-tree/nvim-tree.lua" },
+  { "nvim-lualine/lualine.nvim", opts = { options = { theme = "tokyonight" }, sections = {  lualine_b = {'diff', 'diagnostics'} } } },
+  { "nvim-tree/nvim-tree.lua", opts = {} },
   { "nvim-tree/nvim-web-devicons" },
-  { "nvim-treesitter/nvim-treesitter-textobjects" },
   { "nvim-treesitter/nvim-treesitter" },
   { "rgroli/other.nvim" },
   { "RRethy/nvim-treesitter-endwise" },
@@ -124,7 +117,7 @@ require("other-nvim").setup({
         end
       end
       return filtered_matches
-		end,
+    end,
   }
 })
 
@@ -144,11 +137,8 @@ require("conform").setup({
     ruby = { "rubocop" },
     go = { "gofmt" },
   },
-  format_on_save = {
-    timeout_ms = 500,
-    async = false,
-    lsp_fallback = true,
-  },
+  format_on_save = function(bufnr)  end,
+  format_after_save = function(bufnr)  end,
 })
 
 -- lint
@@ -174,43 +164,9 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave", "TextCh
   end,
 })
 
--- trouble
-require("trouble").setup({})
-
--- nvim-tree
-require("nvim-tree").setup({})
-
--- comment
-require("Comment").setup({})
-
--- fzf-lua
-require("fzf-lua").setup({
-  file_ignore_patterns = { 'node_modules/.*', 'vendor/.*', 'tmp/.*', '.git/.*'},
-})
-
--- endwise
-require("nvim-treesitter.configs").setup({
-  endwise = { enable = true },
-})
-
--- lualine
-require("lualine").setup({
-  options = {
-    theme = "tokyonight",
-  },
-})
-
--- bufferline
-require("bufferline").setup({
-  options = {
-    offsets = {
-      { filetype = "NvimTree" },
-    },
-  },
-})
-
 -- nvim-treesitter
 require("nvim-treesitter.configs").setup({
+  endwise = { enable = true },
   highlight = {
     enable = true,
   },
@@ -220,18 +176,6 @@ require("nvim-treesitter.configs").setup({
       init_selection = "+",
       node_incremental = "+",
       node_decremental = "-",
-    },
-  },
-  textobjects = {
-    select = {
-      enable = true,
-      lookahead = true,
-      keymaps = {
-        ["af"] = "@function.outer",
-        ["if"] = "@function.inner",
-        ["ac"] = "@class.outer",
-        ["ic"] = "@class.inner",
-      },
     },
   },
   ensure_installed = {
@@ -255,8 +199,8 @@ lsp_zero.extend_cmp()
 lsp_zero.extend_lspconfig()
 lsp_zero.on_attach(function(_, bufnr)
   lsp_zero.default_keymaps({ buffer = bufnr })
-  vim.keymap.set("n", "gQ", "<cmd>lua vim.lsp.buf.format({async = true})<cr>", { buffer = true })
-  vim.keymap.set("n", "gq", "<cmd>lua vim.lsp.buf.code_action()<cr>", { buffer = true })
+  vim.keymap.set("n", "gq", "<cmd>lua vim.lsp.buf.format({async = true})<cr>", { buffer = true })
+  vim.keymap.set("n", "gQ", "<cmd>lua vim.lsp.buf.code_action()<cr>", { buffer = true })
 end)
 
 -- cmp
