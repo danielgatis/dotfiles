@@ -15,11 +15,6 @@ vim.opt.termguicolors = true
 
 -- Global Variables
 vim.g.mapleader = " "
-vim.g.copilot_no_tab_map = true
-vim.g.lsp_zero_extend_cmp = 0
-vim.g.lsp_zero_extend_lspconfig = 0
-vim.g.blamer_enabled = 1
-vim.g.blamer_show_in_insert_modes = 0
 
 -- Keymaps
 vim.keymap.set("n", "<c-p>", "<cmd>lua require('fzf-lua').files()<cr>", { silent = true })
@@ -30,10 +25,8 @@ vim.keymap.set("n", "<leader>dd", function() require("duck").hatch() end)
 vim.keymap.set("n", "<leader>dk", function() require("duck").cook() end)
 vim.keymap.set("n", "<m-tab>", "<cmd>BufferLineCycleNext<cr>")
 vim.keymap.set("n", "<m-s-tab>", "<cmd>BufferLineCyclePrev<cr>")
-vim.keymap.set("n", "<m-q>", '<cmd>lua require("bufdelete").bufdelete(0, true)<cr>')
 vim.keymap.set("n", "<leader>gb", '<cmd>lua require"gitlinker".get_buf_range_url("n", {action_callback = require"gitlinker.actions".open_in_browser})<cr>', { silent = true })
 vim.keymap.set("v", "<leader>gb", '<cmd>lua require"gitlinker".get_buf_range_url("v", {action_callback = require"gitlinker.actions".open_in_browser})<cr>', { silent = true })
-vim.keymap.set("i", "<c-cr>", 'copilot#Accept("\\<cr>")', { expr = true, replace_keycodes = false })
 vim.keymap.set("n", "tt", "<cmd>:Other<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>e", "<cmd>NvimTreeToggle<cr>", { noremap = true, silent = true })
 
@@ -46,23 +39,19 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
   { "akinsho/bufferline.nvim", opts = { options = { offsets = { { filetype = "NvimTree" } } } } },
-  { "APZelos/blamer.nvim" },
-  { "famiu/bufdelete.nvim" },
   { "folke/tokyonight.nvim" },
   { "folke/trouble.nvim", opts = {} },
   { "github/copilot.vim" },
   { "hrsh7th/cmp-buffer" },
   { "hrsh7th/cmp-nvim-lsp" },
-  { "hrsh7th/cmp-path" },
-  { "hrsh7th/nvim-cmp", event = "InsertEnter" },
+  { "hrsh7th/nvim-cmp" },
   { "ibhagwan/fzf-lua", opts = { winopts = { preview = {  hidden = 'hidden' } }, file_ignore_patterns = { 'node_modules/.*', 'vendor/.*', 'tmp/.*', '.git/.*' } } },
   { "ibhagwan/smartyank.nvim", opts = {  highlight = { timeout = 200 } } },
   { "j-hui/fidget.nvim", version = "v1.*", opts = {} },
-  { "L3MON4D3/LuaSnip", version = "v2.*", build = "make install_jsregexp" },
+  { "L3MON4D3/LuaSnip" },
   { "mfussenegger/nvim-lint" },
-  { "mg979/vim-visual-multi", branch = "master" },
   { "michaeljsmith/vim-indent-object" },
-  { "neovim/nvim-lspconfig", cmd = { "LspInfo", "LspInstall", "LspStart" }, event = { "BufReadPre", "BufNewFile" } },
+  { "neovim/nvim-lspconfig" },
   { "numToStr/Comment.nvim", opts = {} },
   { "nvim-lua/plenary.nvim" },
   { "nvim-lualine/lualine.nvim", opts = { options = { theme = "tokyonight" }, sections = {  lualine_b = {'diff', 'diagnostics'} } } },
@@ -195,55 +184,33 @@ require("nvim-treesitter.configs").setup({
 
 -- lsp-zero
 local lsp_zero = require("lsp-zero")
-lsp_zero.extend_cmp()
-lsp_zero.extend_lspconfig()
 lsp_zero.on_attach(function(_, bufnr)
   lsp_zero.default_keymaps({ buffer = bufnr })
   vim.keymap.set("n", "gq", "<cmd>lua vim.lsp.buf.format({async = true})<cr>", { buffer = true })
   vim.keymap.set("n", "gQ", "<cmd>lua vim.lsp.buf.code_action()<cr>", { buffer = true })
 end)
 
--- cmp
-local cmp = require("cmp")
-local cmp_format = require("lsp-zero").cmp_format()
-local cmp_action = require("lsp-zero").cmp_action()
-
+local cmp = require('cmp')
 cmp.setup({
-  formatting = cmp_format,
-  mapping = cmp.mapping.preset.insert({
-    ["<CR>"] = cmp.mapping.confirm({ select = true }),
-    ["<Tab>"] = cmp_action.luasnip_supertab(),
-    ["<S-Tab>"] = cmp_action.luasnip_shift_supertab(),
-  }),
   sources = {
-    {
-      name = "nvim_lsp",
-      entry_filter = function(entry)
-        return require("cmp").lsp.CompletionItemKind.Snippet ~= entry:get_kind()
-      end,
-    },
-    { name = "nvim_lua" },
-    { name = "buffer" },
-    { name = "path" },
+    {name = 'nvim_lsp'},
+    {name = 'buffer', keyword_length = 3},
   },
+  mapping = cmp.mapping.preset.insert({
+    ['<Enter>'] = cmp.mapping.confirm({ select = true }),
+    ['<C-Space>'] = cmp.mapping.complete(),
+  }),
+  formatting = lsp_zero.cmp_format(),
 })
 
--- mason
-require("mason-lspconfig").setup({
-  automatic_installation = true,
-  ensure_installed = {
-    "tsserver",
-    "eslint",
-    "html",
-    "cssls",
-    "solargraph",
-    "gopls",
-  },
+require('mason').setup({})
+require('mason-lspconfig').setup({
+  ensure_installed = {'tsserver', 'rust_analyzer'},
   handlers = {
     lsp_zero.default_setup,
     lua_ls = function()
       local lua_opts = lsp_zero.nvim_lua_ls()
-      require("lspconfig").lua_ls.setup(lua_opts)
+      require('lspconfig').lua_ls.setup(lua_opts)
     end,
-  },
+  }
 })
