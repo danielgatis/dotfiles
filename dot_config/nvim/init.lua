@@ -1,3 +1,6 @@
+-- luacheck: globals vim
+vim = vim
+
 -- Settings
 vim.opt.number = true
 vim.opt.mouse = "a"
@@ -15,25 +18,48 @@ vim.opt.termguicolors = true
 
 -- Global Variables
 vim.g.mapleader = " "
+vim.g.localmapleader = " "
 
 -- Keymaps
-vim.keymap.set("n", "<c-p>", "<cmd>lua require('fzf-lua').files()<cr>", { silent = true })
-vim.keymap.set("n", "<c-s-p>", "<cmd>lua require('fzf-lua').live_grep()<cr>", { silent = true })
+vim.keymap.set("n", "<c-p>", function()
+  require("fzf-lua").files()
+end, { silent = true })
+vim.keymap.set("n", "<c-s-p>", function()
+  require("fzf-lua").live_grep()
+end, { silent = true })
 vim.keymap.set("n", "<leader>e", "<cmd>NvimTreeToggle<cr>")
 vim.keymap.set("n", "<leader>f", "<cmd>NvimTreeFindFile<cr>")
-vim.keymap.set("n", "<leader>dd", function() require("duck").hatch() end)
-vim.keymap.set("n", "<leader>dk", function() require("duck").cook() end)
+vim.keymap.set("n", "<leader>dd", function()
+  require("duck").hatch()
+end)
+vim.keymap.set("n", "<leader>dk", function()
+  require("duck").cook()
+end)
 vim.keymap.set("n", "<m-tab>", "<cmd>BufferLineCycleNext<cr>")
 vim.keymap.set("n", "<m-s-tab>", "<cmd>BufferLineCyclePrev<cr>")
-vim.keymap.set("n", "<leader>gb", '<cmd>lua require"gitlinker".get_buf_range_url("n", {action_callback = require"gitlinker.actions".open_in_browser})<cr>', { silent = true })
-vim.keymap.set("v", "<leader>gb", '<cmd>lua require"gitlinker".get_buf_range_url("v", {action_callback = require"gitlinker.actions".open_in_browser})<cr>', { silent = true })
+vim.keymap.set("n", "<leader>gb", function()
+  require("gitlinker").get_buf_range_url("n", { action_callback = require("gitlinker.actions").open_in_browser })
+end, { silent = true })
+vim.keymap.set("v", "<leader>gb", function()
+  require("gitlinker").get_buf_range_url("v", { action_callback = require("gitlinker.actions").open_in_browser })
+end, { silent = true })
 vim.keymap.set("n", "tt", "<cmd>:Other<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>e", "<cmd>NvimTreeToggle<cr>", { noremap = true, silent = true })
+vim.keymap.set({ "n", "v" }, "<leader>ff", function()
+  require("conform").format({ async = true, lsp_fallback = true })
+end)
 
 -- Plugins
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({"git", "clone", "--filter=blob:none", "https://github.com/folke/lazy.nvim.git", "--branch=stable", lazypath })
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable",
+    lazypath,
+  })
 end
 vim.opt.rtp:prepend(lazypath)
 
@@ -42,19 +68,29 @@ require("lazy").setup({
   { "folke/tokyonight.nvim" },
   { "folke/trouble.nvim", opts = {} },
   { "github/copilot.vim" },
-  { "hrsh7th/cmp-buffer" },
-  { "hrsh7th/cmp-nvim-lsp" },
-  { "hrsh7th/nvim-cmp" },
-  { "ibhagwan/fzf-lua", opts = { winopts = { preview = {  hidden = 'hidden' } }, file_ignore_patterns = { 'node_modules/.*', 'vendor/.*', 'tmp/.*', '.git/.*' } } },
-  { "ibhagwan/smartyank.nvim", opts = {  highlight = { timeout = 200 } } },
+  { "hrsh7th/nvim-cmp", event = "InsertEnter", dependencies = { "hrsh7th/cmp-buffer", "L3MON4D3/LuaSnip" } },
+  {
+    "ibhagwan/fzf-lua",
+    opts = {
+      winopts = { preview = { hidden = "hidden" } },
+      file_ignore_patterns = { "node_modules/.*", "vendor/.*", "tmp/.*", ".git/.*" },
+    },
+  },
+  { "ibhagwan/smartyank.nvim", opts = { highlight = { timeout = 200 } } },
   { "j-hui/fidget.nvim", version = "v1.*", opts = {} },
-  { "L3MON4D3/LuaSnip" },
   { "mfussenegger/nvim-lint" },
   { "michaeljsmith/vim-indent-object" },
-  { "neovim/nvim-lspconfig" },
+  {
+    "neovim/nvim-lspconfig",
+    cmd = { "LspInfo", "LspInstall", "LspStart" },
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = { "hrsh7th/cmp-nvim-lsp", "williamboman/mason-lspconfig.nvim" },
+  },
   { "numToStr/Comment.nvim", opts = {} },
-  { "nvim-lua/plenary.nvim" },
-  { "nvim-lualine/lualine.nvim", opts = { options = { theme = "tokyonight" }, sections = {  lualine_b = {'diff', 'diagnostics'} } } },
+  {
+    "nvim-lualine/lualine.nvim",
+    opts = { options = { theme = "tokyonight" }, sections = { lualine_b = { "diff", "diagnostics" } } },
+  },
   { "nvim-tree/nvim-tree.lua", opts = {} },
   { "nvim-tree/nvim-web-devicons" },
   { "nvim-treesitter/nvim-treesitter" },
@@ -62,14 +98,13 @@ require("lazy").setup({
   { "RRethy/nvim-treesitter-endwise" },
   { "ruifm/gitlinker.nvim" },
   { "stevearc/conform.nvim" },
-  { "sunaku/tmux-navigate", lazy = false },
+  { "sunaku/tmux-navigate" },
   { "tamton-aquib/duck.nvim" },
   { "tpope/vim-repeat" },
   { "tpope/vim-surround" },
-  { "VonHeikemen/lsp-zero.nvim", branch = "v3.x", lazy = true, config = false },
+  { "VonHeikemen/lsp-zero.nvim", branch = "v3.x" },
   { "wellle/targets.vim" },
-  { "williamboman/mason-lspconfig.nvim" },
-  { "williamboman/mason.nvim", lazy = false, config = true },
+  { "williamboman/mason.nvim" },
 }, {
   install = {
     colorscheme = {
@@ -107,11 +142,11 @@ require("other-nvim").setup({
       end
       return filtered_matches
     end,
-  }
+  },
 })
 
--- conform
 require("conform").setup({
+  -- conform
   formatters_by_ft = {
     lua = { "stylua" },
     python = { "isort", "black" },
@@ -126,13 +161,12 @@ require("conform").setup({
     ruby = { "rubocop" },
     go = { "gofmt" },
   },
-  format_on_save = function(bufnr)  end,
-  format_after_save = function(bufnr)  end,
+  format_on_save = function(_) end,
+  format_after_save = function(_) end,
 })
 
 -- lint
-local lint = require("lint")
-lint.linters_by_ft = {
+require("lint").linters_by_ft = {
   javascript = { "eslint_d", "eslint" },
   typescript = { "eslint_d", "eslint" },
   typescriptreact = { "eslint_d", "eslint" },
@@ -145,11 +179,10 @@ lint.linters_by_ft = {
   go = { "golangcilint" },
 }
 
-local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave", "TextChanged" }, {
-  group = lint_augroup,
+  group = vim.api.nvim_create_augroup("lint", { clear = true }),
   callback = function()
-    lint.try_lint()
+    require("lint").try_lint()
   end,
 })
 
@@ -183,34 +216,44 @@ require("nvim-treesitter.configs").setup({
 })
 
 -- lsp-zero
-local lsp_zero = require("lsp-zero")
-lsp_zero.on_attach(function(_, bufnr)
-  lsp_zero.default_keymaps({ buffer = bufnr })
-  vim.keymap.set("n", "gq", "<cmd>lua vim.lsp.buf.format({async = true})<cr>", { buffer = true })
-  vim.keymap.set("n", "gQ", "<cmd>lua vim.lsp.buf.code_action()<cr>", { buffer = true })
+require("lsp-zero").extend_cmp()
+require("lsp-zero").extend_lspconfig()
+
+require("lsp-zero").on_attach(function(_, bufnr)
+  require("lsp-zero").default_keymaps({ buffer = bufnr })
 end)
 
-local cmp = require('cmp')
-cmp.setup({
-  sources = {
-    {name = 'nvim_lsp'},
-    {name = 'buffer', keyword_length = 3},
-  },
-  mapping = cmp.mapping.preset.insert({
-    ['<Enter>'] = cmp.mapping.confirm({ select = true }),
-    ['<C-Space>'] = cmp.mapping.complete(),
-  }),
-  formatting = lsp_zero.cmp_format(),
+require("lsp-zero").set_server_config({
+  on_init = function(client)
+    client.server_capabilities.semanticTokensProvider = nil
+  end,
 })
 
-require('mason').setup({})
-require('mason-lspconfig').setup({
-  ensure_installed = {'tsserver', 'rust_analyzer'},
+-- nvim-cmp
+require("cmp").setup({
+  completion = {
+    completeopt = "menu,menuone,noinsert",
+  },
+  sources = {
+    { name = "nvim_lsp" },
+    { name = "buffer", keyword_length = 3 },
+  },
+  mapping = require("cmp").mapping.preset.insert({
+    ["<CR>"] = require("cmp").mapping.confirm({ select = true }),
+    ["<C-Space>"] = require("cmp").mapping.complete(),
+  }),
+  formatting = require("lsp-zero").cmp_format(),
+})
+
+--- mason
+require("mason").setup({})
+require("mason-lspconfig").setup({
+  ensure_installed = { "tsserver", "rust_analyzer" },
   handlers = {
-    lsp_zero.default_setup,
+    require("lsp-zero").default_setup,
     lua_ls = function()
-      local lua_opts = lsp_zero.nvim_lua_ls()
-      require('lspconfig').lua_ls.setup(lua_opts)
+      local lua_opts = require("lsp-zero").nvim_lua_ls()
+      require("lspconfig").lua_ls.setup(lua_opts)
     end,
-  }
+  },
 })
