@@ -39,6 +39,14 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
   {
+    "famiu/bufdelete.nvim",
+    keys = {
+      { "<m-q>",     "<cmd>lua require('bufdelete').bufdelete(0, true)<cr>", "n" },
+      { "<m-tab>",   "<cmd>BufferLineCycleNext<cr>",                         "n" },
+      { "<m-s-tab>", "<cmd>BufferLineCyclePrev<cr>",                         "n" },
+    }
+  },
+  {
     "akinsho/bufferline.nvim",
     event = "VeryLazy",
     keys = {
@@ -133,37 +141,11 @@ require("lazy").setup({
   },
   {
     "neovim/nvim-lspconfig",
-    cmd = { "LspInfo", "LspInstall", "LspStart" },
-    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     dependencies = {
       { "hrsh7th/cmp-nvim-lsp" },
-      {
-        "williamboman/mason.nvim",
-        config = true
-      },
-      {
-        "williamboman/mason-lspconfig.nvim",
-        init = function()
-          local cfg = require("mason-lspconfig")
-          local lspzero = require("lsp-zero")
-          local lspcfg = require("lspconfig")
-          cfg.setup({
-            ensure_installed = { "tsserver", "rust_analyzer" },
-            handlers = {
-              lspzero.default_setup,
-              lua_ls = function()
-                local lua_opts = lspzero.nvim_lua_ls()
-                lspcfg.lua_ls.setup(lua_opts)
-              end,
-            },
-          })
-        end
-      },
-      {
-        "j-hui/fidget.nvim",
-        version = "v1.*",
-        config = true
-      },
+      { "williamboman/mason.nvim" },
+      { "williamboman/mason-lspconfig.nvim" },
+      { "j-hui/fidget.nvim" },
     },
   },
   {
@@ -317,23 +299,30 @@ require("lazy").setup({
   {
     "VonHeikemen/lsp-zero.nvim",
     branch = "v3.x",
-    init = function()
-      vim.g.lsp_zero_extend_cmp = 0
-      vim.g.lsp_zero_extend_lspconfig = 0
-
-      local lspzero = require("lsp-zero")
-      lspzero.on_attach(function(_, bufnr)
-        lspzero.default_keymaps({ buffer = bufnr })
-      end)
-      lspzero.set_server_config({
-        on_init = function(client)
-          client.server_capabilities.semanticTokensProvider = nil
-        end,
-      })
-    end,
   },
   {
     "wellle/targets.vim",
     event = { "VeryLazy" },
+  },
+})
+
+local lsp_zero = require('lsp-zero')
+lsp_zero.on_attach(function(_, bufnr)
+  lsp_zero.default_keymaps({ buffer = bufnr })
+end)
+lsp_zero.set_server_config({
+  on_init = function(client)
+    client.server_capabilities.semanticTokensProvider = nil
+  end,
+})
+require('mason').setup({})
+require('mason-lspconfig').setup({
+  ensure_installed = {},
+  handlers = {
+    lsp_zero.default_setup,
+    lua_ls = function()
+      local lua_opts = lsp_zero.nvim_lua_ls()
+      require('lspconfig').lua_ls.setup(lua_opts)
+    end,
   },
 })
