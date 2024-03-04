@@ -32,8 +32,6 @@ font:
 key_bindings:
   - { key: N,          mods: Command,          action: CreateNewWindow                       }
   - { key: Q,          mods: Command,          action: Quit                                  }
-  - { key: Return,     mods: Shift,            chars: "\x1b[13;2u"                           }
-  - { key: Return,     mods: Control,          chars: "\x1b[13;5u"                           }
   - { key: Space,      mods: Control,          chars: "\x00"                                 }
   - { key: Grave,      mods: Alt,              chars: "\x1b`"                                }
   - { key: Grave,      mods: Alt|Shift,        chars: "\x1b~"                                }
@@ -46,9 +44,8 @@ key_bindings:
   - { key: Slash,      mods: Alt,              chars: "\x1b/"                                }
   - { key: RBracket,   mods: Alt,              chars: "\x1b]"                                }
   - { key: LBracket,   mods: Alt,              chars: "\x1b["                                }
-  - { key: Tab,        mods: Alt,              chars: "\t"                                   }
-  - { key: Tab,        mods: Alt,              chars: "\x1b\t"                               }
-  - { key: Tab,        mods: Alt|Shift,        chars: "\x1b\x1b[Z"                           }
+  - { key: Tab,        mods: Control,          chars: "\x1b[9;5u"                            }
+  - { key: Tab,        mods: Control|Shift,    chars: "\x1b[9;6u"                            }
   - { key: A,          mods: Alt,              chars: "\x1ba"                                }
   - { key: B,          mods: Alt,              chars: "\x1bb"                                }
   - { key: C,          mods: Alt,              chars: "\x1bc"                                }

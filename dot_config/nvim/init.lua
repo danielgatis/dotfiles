@@ -39,11 +39,19 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
   {
+    "junegunn/fzf",
+    event = "VeryLazy",
+  },
+  {
+    "kevinhwang91/nvim-bqf",
+    event = "VeryLazy",
+  },
+  {
     "famiu/bufdelete.nvim",
     keys = {
-      { "<m-q>",     "<cmd>lua require('bufdelete').bufdelete(0, true)<cr>", "n" },
-      { "<m-tab>",   "<cmd>BufferLineCycleNext<cr>",                         "n" },
-      { "<m-s-tab>", "<cmd>BufferLineCyclePrev<cr>",                         "n" },
+      { "<c-x>",     "<cmd>lua require('bufdelete').bufdelete(0, true)<cr>", "n" },
+      { "<c-tab>",   "<cmd>BufferLineCycleNext<cr>",                         "n" },
+      { "<c-s-tab>", "<cmd>BufferLineCyclePrev<cr>",                         "n" },
     }
   },
   {
@@ -303,6 +311,12 @@ require("lazy").setup({
   {
     "wellle/targets.vim",
     event = { "VeryLazy" },
+  },
+}, {
+  install = {
+    colorscheme = {
+      "tokyonight-night",
+    },
   },
 })
 
