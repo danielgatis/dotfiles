@@ -210,7 +210,7 @@ require("lazy").setup({
   },
   {
     "rgroli/other.nvim",
-    keys = { { "<leader>t", "<cmd>:Other<cr>" } },
+    keys = { { "<leader>gt", "<cmd>:Other<cr>" } },
     opt = {
       mappings = {
         { pattern = "(.*).ts$",           target = "%1.test.ts" },
@@ -311,6 +311,18 @@ require("lazy").setup({
   {
     "wellle/targets.vim",
     event = { "VeryLazy" },
+  },
+  {
+    "vim-test/vim-test",
+    dependencies = { "preservim/vimux" },
+    keys = {
+      { "<leader>tf", "<cmd>TestFile<cr>", "n" },
+      { "<leader>tt", "<cmd>TestNearest<cr>", "n" },
+      { "<leader>ts", "<cmd>TestSuite<cr>", "n" }
+    },
+    config = function()
+      vim.g["test#strategy"] = "vimux"
+    end,
   },
 }, {
   install = {
