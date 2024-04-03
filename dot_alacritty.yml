@@ -63,8 +63,13 @@ key_bindings:
   - { key: M,          mods: Alt,              chars: "\x1bm"                                }
   - { key: N,          mods: Alt,              chars: "\x1bn"                                }
   - { key: O,          mods: Alt,              chars: "\x1bo"                                }
+
+  # https://www.reddit.com/r/neovim/comments/mbj8m5/how_to_setup_ctrlshiftkey_mappings_in_neovim_and/
   - { key: P,          mods: Alt,              chars: "\x1bp"                                }
-  - { key: P,          mods: Control|Shift,    chars: "\x1b[80;6u"                           } # https://www.reddit.com/r/neovim/comments/mbj8m5/how_to_setup_ctrlshiftkey_mappings_in_neovim_and/
+  - { key: P,          mods: Control|Shift,    chars: "\x1b[80;6u"                           }
+  - { key: P,          mods: Command|Shift,    chars: "\x1b[80;6u"                           }
+  - { key: P,          mods: Command,          chars: "\x1b[80;6u"                           }
+
   - { key: Q,          mods: Alt,              chars: "\x1bq"                                }
   - { key: R,          mods: Alt,              chars: "\x1br"                                }
   - { key: S,          mods: Alt,              chars: "\x1bs"                                }

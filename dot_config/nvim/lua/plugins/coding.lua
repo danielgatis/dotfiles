@@ -62,6 +62,9 @@ return {
   {
     'numToStr/Comment.nvim',
     event = { 'BufReadPost', 'BufNewFile', 'BufWritePre' },
+    config = function()
+      require('Comment').setup()
+    end,
   },
   {
     'vim-test/vim-test',
