@@ -6,7 +6,7 @@ return {
     event = 'VeryLazy',
     config = function()
       local servers = {
-        'ruby_ls',
+        'solargraph',
         'gopls',
         'tsserver',
         'pyright',
@@ -47,6 +47,7 @@ return {
       end
 
       local lspconfig = require 'lspconfig'
+      lspconfig.solargraph.setup {}
       lspconfig.lua_ls.setup {
         settings = {
           Lua = {
