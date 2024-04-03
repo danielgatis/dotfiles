@@ -1,19 +1,19 @@
 return {
-  { "kyazdani42/nvim-web-devicons" },
-  { "j-hui/fidget.nvim" },
+  { 'kyazdani42/nvim-web-devicons' },
+  { 'j-hui/fidget.nvim' },
   {
-    "folke/noice.nvim",
-    event = "VeryLazy",
+    'folke/noice.nvim',
+    event = 'VeryLazy',
     dependencies = {
-      "MunifTanjim/nui.nvim",
+      'MunifTanjim/nui.nvim',
     },
     config = function()
-      require("noice").setup({
+      require('noice').setup {
         lsp = {
           override = {
-            ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-            ["vim.lsp.util.stylize_markdown"] = true,
-            ["cmp.entry.get_documentation"] = true,
+            ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
+            ['vim.lsp.util.stylize_markdown'] = true,
+            ['cmp.entry.get_documentation'] = true,
           },
         },
         presets = {
@@ -23,7 +23,7 @@ return {
           inc_rename = true,
           lsp_doc_border = true,
         },
-      })
-    end
+      }
+    end,
   },
 }
