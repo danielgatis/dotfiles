@@ -6,7 +6,7 @@ return {
     event = 'VeryLazy',
     config = function()
       local servers = {
-        'solargraph',
+        'ruby_ls',
         'gopls',
         'tsserver',
         'pyright',
@@ -45,6 +45,17 @@ return {
           capabilities = lsp_capabilities,
         }
       end
+
+      local lspconfig = require 'lspconfig'
+      lspconfig.lua_ls.setup {
+        settings = {
+          Lua = {
+            diagnostics = {
+              globals = { 'vim' },
+            },
+          },
+        },
+      }
     end,
   },
 }

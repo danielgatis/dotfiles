@@ -72,25 +72,16 @@ return {
     event = 'VeryLazy',
   },
   {
-    'famiu/bufdelete.nvim',
-    keys = {
-      { '<c-x>', "<cmd>lua require('bufdelete').bufdelete(0, true)<cr>", 'n' },
-      { '<c-tab>', '<cmd>BufferLineCycleNext<cr>', 'n' },
-      { '<c-s-tab>', '<cmd>BufferLineCyclePrev<cr>', 'n' },
-    },
-  },
-  {
     'akinsho/bufferline.nvim',
     event = 'VeryLazy',
     keys = {
+      { '<m-z>', ':bd<cr>', 'n' },
       { '<m-tab>', '<cmd>BufferLineCycleNext<cr>', 'n' },
       { '<m-s-tab>', '<cmd>BufferLineCyclePrev<cr>', 'n' },
     },
     config = function()
       require('bufferline').setup {
         options = {
-          show_buffer_close_icons = false,
-          show_close_icon = false,
           offsets = {
             {
               filetype = 'NvimTree',
