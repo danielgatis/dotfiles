@@ -48,9 +48,7 @@ return {
           end, { 'i', 's' }),
           ['<CR>'] = cmp.mapping.confirm { select = true },
           ['<Tab>'] = cmp.mapping(function(fallback)
-            if vim.b._copilot.suggestions ~= nil then
-              vim.api.nvim_feedkeys(vim.fn['copilot#Accept'](vim.api.nvim_replace_termcodes('<Tab>', true, true, true)), 'n', true)
-            elseif cmp.visible() then
+            if cmp.visible() then
               cmp.select_next_item()
             elseif has_words_before() then
               cmp.complete()

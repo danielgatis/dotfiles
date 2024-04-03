@@ -51,7 +51,7 @@ return {
     config = function()
       vim.cmd [[
         let g:copilot_no_tab_map = v:true
-        imap <expr> <Plug>(vimrc:copilot-dummy-map) copilot#Accept("\<Tab>")
+        imap <expr> <C-j> copilot#Accept("\<Tab>")
       ]]
     end,
   },
