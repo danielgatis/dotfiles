@@ -43,8 +43,6 @@ zplug "zsh-users/zsh-completions"
 zplug "zsh-users/zsh-autosuggestions"
 zplug "zsh-users/zsh-syntax-highlighting"
 zplug "spaceship-prompt/spaceship-prompt", use:spaceship.zsh, from:github, as:theme
-zplug "rupa/z", use:z.sh
-zplug "plugins/direnv", from:oh-my-zsh
 
 SPACESHIP_TIME_SHOW=true
 
@@ -70,6 +68,12 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 # ASDF
 source /opt/homebrew/opt/asdf/libexec/asdf.sh
 
+# zoxide
+eval "$(zoxide init zsh)"
+
+# direnv
+eval "$(direnv hook zsh)"
+
 # Sdkman
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
@@ -81,3 +85,4 @@ export LC_ALL="en_US.UTF-8"
 export TMUXP_CONFIGDIR="$HOME/tmuxp"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="/opt/homebrew/opt/postgresql@13/bin:$PATH"
+unset GEM_HOME

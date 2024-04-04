@@ -7,3 +7,4 @@ docker-compose.deps.yml
 .tmuxp.yaml
 config/initializers/excluded/*
 .solargraph.yml
+.envrc
