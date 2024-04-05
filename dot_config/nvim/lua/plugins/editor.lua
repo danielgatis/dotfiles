@@ -72,10 +72,15 @@ return {
     event = 'VeryLazy',
   },
   {
+    'famiu/bufdelete.nvim',
+    keys = {
+      { '<m-z>', function() require('bufdelete').bufdelete(0, true) end, 'n' },
+    },
+  },
+  {
     'akinsho/bufferline.nvim',
     event = 'VeryLazy',
     keys = {
-      { '<m-z>', ':bd<cr>', 'n' },
       { '<m-tab>', '<cmd>BufferLineCycleNext<cr>', 'n' },
       { '<m-s-tab>', '<cmd>BufferLineCyclePrev<cr>', 'n' },
     },
