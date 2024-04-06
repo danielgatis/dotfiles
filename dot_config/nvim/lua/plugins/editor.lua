@@ -82,38 +82,49 @@ return {
     },
   },
   {
-    'stevearc/oil.nvim',
+    'nvim-tree/nvim-tree.lua',
     keys = {
       {
         '`\\',
-        function()
-          require('oil').toggle_float()
-        end,
+        '<cmd>NvimTreeFindFileToggle<cr>',
         'n',
       },
     },
     config = function()
-      require('oil').setup {
-        delete_to_trash = true,
-        keymaps = {
-          ['g?'] = 'actions.show_help',
-          ['<CR>'] = 'actions.select',
-          ['<C-s>'] = 'actions.select_vsplit',
-          ['<C-h>'] = 'actions.select_split',
-          ['<C-t>'] = 'actions.select_tab',
-          ['<C-p>'] = 'actions.preview',
-          ['<C-c>'] = 'actions.close',
-          ['<C-l>'] = 'actions.refresh',
-          ['-'] = 'actions.parent',
-          ['_'] = 'actions.open_cwd',
-          ['`'] = 'actions.cd',
-          ['~'] = 'actions.tcd',
-          ['gs'] = 'actions.change_sort',
-          ['gx'] = 'actions.open_external',
-          ['g.'] = 'actions.toggle_hidden',
-          ['g\\'] = 'actions.toggle_trash',
-          ['q'] = 'actions.close',
-          ['<esc>'] = 'actions.close',
+      local HEIGHT_RATIO = 0.8
+      local WIDTH_RATIO = 0.8
+
+      require('nvim-tree').setup {
+        view = {
+          number = true,
+          relativenumber = true,
+          adaptive_size = false,
+          preserve_window_proportions = true,
+          float = {
+            enable = true,
+            quit_on_focus_loss = true,
+            open_win_config = function()
+              local screen_w = vim.opt.columns:get()
+              local screen_h = vim.opt.lines:get() - vim.opt.cmdheight:get()
+              local window_w = screen_w * WIDTH_RATIO
+              local window_h = screen_h * HEIGHT_RATIO
+              local window_w_int = math.floor(window_w)
+              local window_h_int = math.floor(window_h)
+              local center_x = (screen_w - window_w) / 2
+              local center_y = ((vim.opt.lines:get() - window_h) / 2) - vim.opt.cmdheight:get()
+              return {
+                border = 'rounded',
+                relative = 'editor',
+                row = center_y,
+                col = center_x,
+                width = window_w_int,
+                height = window_h_int,
+              }
+            end,
+          },
+          width = function()
+            return math.floor(vim.opt.columns:get() * WIDTH_RATIO)
+          end,
         },
       }
     end,
