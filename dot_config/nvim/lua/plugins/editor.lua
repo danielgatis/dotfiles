@@ -1,34 +1,23 @@
 return {
   {
-    'folke/flash.nvim',
-    opts = {
-      search = {
-        forward = true,
-        multi_window = false,
-        wrap = false,
-        incremental = true,
-      },
-    },
-  },
-  {
     'ibhagwan/fzf-lua',
     keys = {
       {
-        '<c-p>',
+        '`p',
         function()
           require('fzf-lua').files()
         end,
         'n',
       },
       {
-        '<c-s-p>',
+        '``p',
         function()
           require('fzf-lua').live_grep()
         end,
         'n',
       },
       {
-        '<c-m-p>',
+        '```p',
         function()
           require('fzf-lua').git_status()
         end,
@@ -46,12 +35,87 @@ return {
     opts = { highlight = { timeout = 200 } },
   },
   {
-    'nvim-tree/nvim-tree.lua',
+    'folke/flash.nvim',
+    event = 'VeryLazy',
+    opts = {},
     keys = {
-      { '<leader>e', '<cmd>:NvimTreeFindFileToggle<cr>' },
+      {
+        's',
+        mode = { 'n', 'x', 'o' },
+        function()
+          require('flash').jump()
+        end,
+        desc = 'Flash',
+      },
+      {
+        'S',
+        mode = { 'n', 'x', 'o' },
+        function()
+          require('flash').treesitter()
+        end,
+        desc = 'Flash Treesitter',
+      },
+      {
+        'r',
+        mode = 'o',
+        function()
+          require('flash').remote()
+        end,
+        desc = 'Remote Flash',
+      },
+      {
+        'R',
+        mode = { 'o', 'x' },
+        function()
+          require('flash').treesitter_search()
+        end,
+        desc = 'Treesitter Search',
+      },
+      {
+        '<c-s>',
+        mode = { 'c' },
+        function()
+          require('flash').toggle()
+        end,
+        desc = 'Toggle Flash Search',
+      },
+    },
+  },
+  {
+    'stevearc/oil.nvim',
+    keys = {
+      {
+        '`\\',
+        function()
+          require('oil').toggle_float()
+        end,
+        'n',
+      },
     },
     config = function()
-      require('nvim-tree').setup {}
+      require('oil').setup {
+        delete_to_trash = true,
+        keymaps = {
+          ['g?'] = 'actions.show_help',
+          ['<CR>'] = 'actions.select',
+          ['<C-s>'] = 'actions.select_vsplit',
+          ['<C-h>'] = 'actions.select_split',
+          ['<C-t>'] = 'actions.select_tab',
+          ['<C-p>'] = 'actions.preview',
+          ['<C-c>'] = 'actions.close',
+          ['<C-l>'] = 'actions.refresh',
+          ['-'] = 'actions.parent',
+          ['_'] = 'actions.open_cwd',
+          ['`'] = 'actions.cd',
+          ['~'] = 'actions.tcd',
+          ['gs'] = 'actions.change_sort',
+          ['gx'] = 'actions.open_external',
+          ['g.'] = 'actions.toggle_hidden',
+          ['g\\'] = 'actions.toggle_trash',
+          ['q'] = 'actions.close',
+          ['<esc>'] = 'actions.close',
+        },
+      }
     end,
   },
   {
@@ -74,7 +138,13 @@ return {
   {
     'famiu/bufdelete.nvim',
     keys = {
-      { '<m-z>', function() require('bufdelete').bufdelete(0, true) end, 'n' },
+      {
+        '<m-x>',
+        function()
+          require('bufdelete').bufdelete(0, true)
+        end,
+        'n',
+      },
     },
   },
   {

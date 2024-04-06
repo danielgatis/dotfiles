@@ -2,6 +2,20 @@ return {
   { 'kyazdani42/nvim-web-devicons' },
   { 'j-hui/fidget.nvim' },
   {
+    'rcarriga/nvim-notify',
+    config = function()
+      require('notify').setup {
+        icons = {
+          ERROR = '',
+          WARN = '',
+          INFO = '',
+          DEBUG = '',
+          TRACE = '✎',
+        },
+      }
+    end,
+  },
+  {
     'folke/noice.nvim',
     event = 'VeryLazy',
     dependencies = {
