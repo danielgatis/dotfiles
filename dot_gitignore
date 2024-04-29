@@ -8,3 +8,4 @@ docker-compose.deps.yml
 config/initializers/excluded/*
 .solargraph.yml
 .envrc
+*.log
