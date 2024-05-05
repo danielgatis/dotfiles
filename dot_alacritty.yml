@@ -30,7 +30,7 @@ mouse:
 font:
   size: 16
   normal:
-    family: FiraCode Nerd Font
+    family: MesloLGS NF
 
 key_bindings:
   - { key: N,          mods: Command,          action: CreateNewWindow                       }

@@ -1,3 +1,21 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# Antigen
+source /opt/homebrew/share/antigen/antigen.zsh
+
+antigen use oh-my-zsh
+antigen bundle zsh-users/zsh-syntax-highlighting
+antigen bundle zsh-users/zsh-autosuggestions
+antigen bundle zsh-users/zsh-completions
+antigen bundle zsh-users/zsh-history-substring-search
+antigen theme romkatv/powerlevel10k
+antigen apply
+
 # History
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=10000000
@@ -32,37 +50,17 @@ alias cop="git add -N .; git diff --name-only | grep '.rb\|.rake' | grep -v .erb
 alias spec='bin/rspec $(git ls-files --modified --others spec | grep -v factories)'
 alias rspec='bin/rspec'
 
-# Zplug
-export ZPLUG_HOME=/opt/homebrew/opt/zplug
-export ZPLUG_PROTOCOL=https
-source $ZPLUG_HOME/init.zsh
-
-zplug "zplug/zplug", hook-build:"zplug --self-manage"
-zplug "zsh-users/zsh-completions"
-zplug "zsh-users/zsh-autosuggestions"
-zplug "zsh-users/zsh-syntax-highlighting"
-zplug "spaceship-prompt/spaceship-prompt", use:spaceship.zsh, from:github, as:theme
-
-SPACESHIP_TIME_SHOW=true
-
-if ! zplug check; then
-  zplug install
-fi
-
-zplug load
-
-# Brew
-eval "$(/opt/homebrew/bin/brew shellenv)"
-
-# ASDF
-source /opt/homebrew/opt/asdf/libexec/asdf.sh
-
-# zoxide
-eval "$(zoxide init zsh)"
-
-# direnv
-eval "$(direnv hook zsh)"
-
 # Exports
 export EDITOR=nvim
-export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.local/bin:/opt/homebrew/opt/postgresql@13/bin:$PATH"
+export PATH="/opt/homebrew/opt/postgresql@13/bin:$PATH"
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+
+# Initializers
+eval "$(/opt/homebrew/bin/brew shellenv)"
+eval "$(zoxide init zsh)"
+eval "$(direnv hook zsh)"
+source /opt/homebrew/opt/asdf/libexec/asdf.sh
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+## Extras
