@@ -1,17 +1,5 @@
 return {
   {
-    'cshuaimin/ssr.nvim',
-    keys = {
-      {
-        '<leader>sR',
-        function()
-          require('ssr').open()
-        end,
-        mode = { 'n', 'x' },
-      },
-    },
-  },
-  {
     'monaqa/dial.nvim',
     keys = {
       {
@@ -67,20 +55,8 @@ return {
     end,
   },
   {
-    'vim-test/vim-test',
-    dependencies = { 'preservim/vimux' },
-    keys = {
-      { '<leader>tf', '<cmd>TestFile<cr>', 'n' },
-      { '<leader>tt', '<cmd>TestNearest<cr>', 'n' },
-      { '<leader>ts', '<cmd>TestSuite<cr>', 'n' },
-    },
-    config = function()
-      vim.g['test#strategy'] = 'vimux'
-    end,
-  },
-  {
     'rgroli/other.nvim',
-    keys = { { '<leader>gt', '<cmd>:Other<cr>' } },
+    keys = { { '<leader>tt', '<cmd>:Other<cr>' } },
     opt = {
       mappings = {
         { pattern = '(.*).ts$', target = '%1.test.ts' },
