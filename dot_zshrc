@@ -13,7 +13,10 @@ antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle zsh-users/zsh-completions
 antigen bundle zsh-users/zsh-history-substring-search
-antigen theme romkatv/powerlevel10k
+
+THEME=romkatv/powerlevel10k
+[[ `antigen list | grep $THEME | wc -l` -gt 0 ]] || antigen theme $THEME
+
 antigen apply
 
 # History
