@@ -12,7 +12,7 @@ return {
       {
         '``p',
         function()
-          require('fzf-lua').live_grep()
+          require('fzf-lua').live_grep_glob()
         end,
         'n',
       },
@@ -82,6 +82,21 @@ return {
     },
   },
   {
+    'stevearc/aerial.nvim',
+    opts = {},
+    keys = {
+      {
+        '`]',
+        '<cmd>AerialToggle!<CR>',
+        'n',
+      },
+    },
+    dependencies = {
+       "nvim-treesitter/nvim-treesitter",
+       "nvim-tree/nvim-web-devicons"
+    },
+  },
+  {
     'nvim-tree/nvim-tree.lua',
     keys = {
       {
@@ -94,7 +109,16 @@ return {
       local HEIGHT_RATIO = 0.8
       local WIDTH_RATIO = 0.8
 
+      local function my_on_attach(bufnr)
+        local api = require "nvim-tree.api"
+        api.config.mappings.default_on_attach(bufnr)
+
+        vim.keymap.set('n', '<esc>', api.tree.close, { buffer = bufnr, noremap = true, silent = true, nowait = true })
+        vim.keymap.set('n', 'q', api.tree.close, { buffer = bufnr, noremap = true, silent = true, nowait = true })
+      end
+
       require('nvim-tree').setup {
+        on_attach = my_on_attach,
         view = {
           number = true,
           relativenumber = true,
@@ -150,7 +174,7 @@ return {
     'famiu/bufdelete.nvim',
     keys = {
       {
-        '<m-x>',
+        '`Down',
         function()
           require('bufdelete').bufdelete(0, true)
         end,
@@ -162,8 +186,8 @@ return {
     'akinsho/bufferline.nvim',
     event = 'VeryLazy',
     keys = {
-      { '<m-tab>', '<cmd>BufferLineCycleNext<cr>', 'n' },
-      { '<m-s-tab>', '<cmd>BufferLineCyclePrev<cr>', 'n' },
+      { '`Left', '<cmd>BufferLineCycleNext<cr>', 'n' },
+      { '`Right', '<cmd>BufferLineCyclePrev<cr>', 'n' },
     },
     config = function()
       require('bufferline').setup {

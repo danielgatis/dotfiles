@@ -6,6 +6,7 @@ return {
     dependencies = {
       { 'RRethy/nvim-treesitter-endwise' },
       { 'nvim-treesitter/nvim-treesitter' },
+      { 'windwp/nvim-ts-autotag' },
       {
         'kiyoon/treesitter-indent-object.nvim',
         keys = {
@@ -45,6 +46,7 @@ return {
       configs.setup {
         endwise = { enable = true },
         highlight = { enable = true },
+        autotag = { enable = true },
         textobjects = {
           select = {
             enable = true,
