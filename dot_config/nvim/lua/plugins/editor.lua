@@ -186,8 +186,8 @@ return {
     'akinsho/bufferline.nvim',
     event = 'VeryLazy',
     keys = {
-      { '`Left', '<cmd>BufferLineCycleNext<cr>', 'n' },
-      { '`Right', '<cmd>BufferLineCyclePrev<cr>', 'n' },
+      { '`Left', '<cmd>BufferLineCyclePrev<cr>', 'n' },
+      { '`Right', '<cmd>BufferLineCycleNext<cr>', 'n' },
     },
     config = function()
       require('bufferline').setup {
