@@ -127,24 +127,44 @@ return {
     event = 'VeryLazy',
     config = function()
       vim.g.projectionist_heuristics = {
+        ['*.go'] = {
+          ['*.go'] = {
+            alternate = '{}_test.go',
+            type = 'source',
+          },
+          ['*_test.go'] = {
+            alternate = '{}.go',
+            type = 'test',
+          },
+        },
+        ['*.rb'] = {
+          ['app/*.rb'] = {
+            alternate = 'spec/{}_spec.rb',
+            type = 'source',
+          },
+          ['spec/*_spec.rb'] = {
+            alternate = 'app/{}.rb',
+            type = 'test',
+          },
+        },
         ['*'] = {
           ['app/*.tsx'] = {
-            alternate = 'app/{}.test.tsx',
+            alternate = { 'app/{}.test.tsx', 'spec/{}.test.tsx' },
           },
           ['app/*.test.tsx'] = {
             alternate = 'app/{}.tsx',
           },
+          ['spec/*.test.tsx'] = {
+            alternate = 'app/{}.tsx',
+          },
           ['app/*.jsx'] = {
-            alternate = 'app/{}.test.jsx',
+            alternate = { 'app/{}.test.jsx', 'spec/{}.test.jsx' },
           },
           ['app/*.test.jsx'] = {
             alternate = 'app/{}.jsx',
           },
-          ['app/*.rb'] = {
-            alternate = 'spec/{}_spec.rb',
-          },
-          ['spec/*_spec.rb'] = {
-            alternate = 'app/{}.rb',
+          ['spec/*.test.jsx'] = {
+            alternate = 'app/{}.jsx',
           },
         },
       }
