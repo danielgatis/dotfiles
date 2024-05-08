@@ -48,7 +48,7 @@ return {
       local WIDTH_RATIO = 0.8
 
       local function my_on_attach(bufnr)
-        local api = require "nvim-tree.api"
+        local api = require 'nvim-tree.api'
         api.config.mappings.default_on_attach(bufnr)
 
         vim.keymap.set('n', '<esc>', api.tree.close, { buffer = bufnr, noremap = true, silent = true, nowait = true })

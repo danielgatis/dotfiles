@@ -55,37 +55,6 @@ return {
     end,
   },
   {
-    'rgroli/other.nvim',
-    keys = { { '<leader>tt', '<cmd>:Other<cr>' } },
-    opt = {
-      mappings = {
-        { pattern = '(.*).ts$', target = '%1.test.ts' },
-        { pattern = '(.*).test.ts$', target = '%1.ts' },
-        { pattern = '(.*).tsx$', target = '%1.test.tsx' },
-        { pattern = '(.*).test.tsx$', target = '%1.tsx' },
-        { pattern = '(.*).js$', target = '%1.test.js' },
-        { pattern = '(.*).test.js$', target = '%1.js' },
-        { pattern = '(.*).jsx$', target = '%1.test.jsx' },
-        { pattern = '(.*).test.jsx$', target = '%1.jsx' },
-        { pattern = '(.*).go$', target = '%1_test.go' },
-        { pattern = '(.*)_test.go$', target = '%1.go' },
-        { pattern = 'app/(.*).rb$', target = 'spec/%1_spec.rb' },
-        { pattern = 'spec/(.*)_spec.rb$', target = 'app/%1.rb' },
-      },
-      hooks = {
-        onFindOtherFiles = function(matches)
-          local filtered_matches = {}
-          for _, match in ipairs(matches) do
-            if not string.match(match.filename, '.test.test.') then
-              table.insert(filtered_matches, match)
-            end
-          end
-          return filtered_matches
-        end,
-      },
-    },
-  },
-  {
     'folke/trouble.nvim',
     event = { 'BufReadPost', 'BufNewFile', 'BufWritePre' },
     keys = {
@@ -152,5 +121,40 @@ return {
         end,
       })
     end,
+  },
+  {
+    'tpope/vim-projectionist',
+    event = 'VeryLazy',
+    config = function()
+      vim.g.projectionist_heuristics = {
+        ['*'] = {
+          ['app/*.tsx'] = {
+            alternate = 'app/{}.test.tsx',
+          },
+          ['app/*.test.tsx'] = {
+            alternate = 'app/{}.tsx',
+          },
+          ['app/*.jsx'] = {
+            alternate = 'app/{}.test.jsx',
+          },
+          ['app/*.test.jsx'] = {
+            alternate = 'app/{}.jsx',
+          },
+          ['app/*.rb'] = {
+            alternate = 'spec/{}_spec.rb',
+          },
+          ['spec/*_spec.rb'] = {
+            alternate = 'app/{}.rb',
+          },
+        },
+      }
+    end,
+    keys = {
+      {
+        '`]',
+        ':A<CR>',
+        silent = true,
+      },
+    },
   },
 }
