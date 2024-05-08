@@ -10,14 +10,14 @@ return {
         'n',
       },
       {
-        '``p',
+        '`[',
         function()
           require('fzf-lua').live_grep_glob()
         end,
         'n',
       },
       {
-        '```p',
+        '`]',
         function()
           require('fzf-lua').git_status()
         end,

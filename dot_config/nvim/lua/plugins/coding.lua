@@ -171,7 +171,7 @@ return {
     end,
     keys = {
       {
-        '`]',
+        '`o',
         ':A<CR>',
         silent = true,
       },
