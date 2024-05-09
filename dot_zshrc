@@ -71,5 +71,6 @@ eval "$(zoxide init zsh)"
 eval "$(direnv hook zsh)"
 source /opt/homebrew/opt/asdf/libexec/asdf.sh
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 ## Extras
