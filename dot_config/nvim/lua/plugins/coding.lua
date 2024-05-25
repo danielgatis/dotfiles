@@ -3,6 +3,16 @@ return {
     'monaqa/dial.nvim',
     keys = {
       {
+        '+',
+        '<C-a>',
+        'n'
+      },
+      {
+        '-',
+        '<C-x>',
+        'n'
+      },
+      {
         '<C-a>',
         function()
           return require('dial.map').inc_normal()
@@ -35,11 +45,11 @@ return {
   {
     'github/copilot.vim',
     cmd = { 'Copilot' },
-    event = { 'BufReadPost', 'BufNewFile', 'BufWritePre' },
+    lazy = false,
     config = function()
       vim.cmd [[
         let g:copilot_no_tab_map = v:true
-        imap <expr> <C-j> copilot#Accept("\<Tab>")
+        imap <expr> `j copilot#Accept("\<Tab>")
       ]]
     end,
   },

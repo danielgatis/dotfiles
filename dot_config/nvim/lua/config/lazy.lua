@@ -13,39 +13,8 @@ end
 
 vim.opt.rtp:prepend(lazypath)
 
-require('lazy').setup({
+require('lazy').setup {
   spec = {
     { import = 'plugins' },
   },
-  defaults = {
-    lazy = true,
-    version = false,
-  },
-  checker = {
-    enabled = true,
-    notify = false,
-  },
-  performance = {
-    cache = {
-      enabled = true,
-    },
-    rtp = {
-      disabled_plugins = {
-        'gzip',
-        'netrwPlugin',
-        'rplugin',
-        'tarPlugin',
-        'tohtml',
-        'tutor',
-        'zipPlugin',
-      },
-    },
-  },
-  debug = false,
-}, {
-  install = {
-    colorscheme = {
-      'catppuccin-mocha',
-    },
-  },
-})
+}

@@ -116,3 +116,4 @@ key_bindings:
   - { key: Down,       mods: Command,          chars: "`Down"                                }
   - { key: RBracket,   mods: Command,          chars: "`]"                                   }
   - { key: LBracket,   mods: Command,          chars: "`["                                   }
+  - { key: Return,     mods: Command,          chars: "`j"                                   }
