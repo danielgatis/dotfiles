@@ -48,13 +48,6 @@ return {
     event = { 'BufReadPost', 'BufNewFile', 'BufWritePre' },
   },
   {
-    'numToStr/Comment.nvim',
-    event = { 'BufReadPost', 'BufNewFile', 'BufWritePre' },
-    config = function()
-      require('Comment').setup()
-    end,
-  },
-  {
     'folke/trouble.nvim',
     event = { 'BufReadPost', 'BufNewFile', 'BufWritePre' },
     keys = {
