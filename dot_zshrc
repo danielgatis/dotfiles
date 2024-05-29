@@ -64,7 +64,6 @@ export EDITOR=nvim
 export PATH="$HOME/.local/bin:/opt/homebrew/opt/postgresql@13/bin:$PATH"
 export PATH="/opt/homebrew/opt/postgresql@13/bin:$PATH"
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
-export DISABLE_AUTO_TITLE=true
 
 # Initializers
 eval "$(/opt/homebrew/bin/brew shellenv)"
