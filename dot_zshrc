@@ -51,7 +51,7 @@ alias vim="nvim"
 
 alias cop="git add -N .; git diff --name-only | grep '.rb\|.rake' | grep -v .erb | grep -v 'db/schema.rb' | xargs bundle exec rubocop -A"
 alias spec='bin/rspec $(git ls-files --modified --others spec | grep -v factories)'
-alias rspec='bin/rspec'
+alias pspec='bin/rspec $(gh pr view --json files --jq ".files.[].path" | grep _spec.rb)'
 
 alias ls='lsd'
 alias l='ls -l'
@@ -64,6 +64,7 @@ export EDITOR=nvim
 export PATH="$HOME/.local/bin:/opt/homebrew/opt/postgresql@13/bin:$PATH"
 export PATH="/opt/homebrew/opt/postgresql@13/bin:$PATH"
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+export DISABLE_AUTO_TITLE=true
 
 # Initializers
 eval "$(/opt/homebrew/bin/brew shellenv)"
