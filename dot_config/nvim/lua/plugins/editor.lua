@@ -3,21 +3,21 @@ return {
     'ibhagwan/fzf-lua',
     keys = {
       {
-        '`p',
+        '<leader>p',
         function()
           require('fzf-lua').files()
         end,
         'n',
       },
       {
-        '`[',
+        '<leader>[',
         function()
           require('fzf-lua').live_grep_glob()
         end,
         'n',
       },
       {
-        '`]',
+        '<leader>]',
         function()
           require('fzf-lua').git_status()
         end,
@@ -38,7 +38,7 @@ return {
     'nvim-tree/nvim-tree.lua',
     keys = {
       {
-        '`\\',
+        '<leader>\\',
         '<cmd>NvimTreeFindFileToggle<cr>',
         'n',
       },
@@ -105,14 +105,10 @@ return {
     event = { 'BufReadPost', 'BufNewFile', 'BufWritePre' },
   },
   {
-    'kevinhwang91/nvim-bqf',
-    event = 'VeryLazy',
-  },
-  {
     'famiu/bufdelete.nvim',
     keys = {
       {
-        '`Down',
+        '<c-q>',
         function()
           require('bufdelete').bufdelete(0, true)
         end,
@@ -124,8 +120,8 @@ return {
     'akinsho/bufferline.nvim',
     event = 'VeryLazy',
     keys = {
-      { '`Left', '<cmd>BufferLineCyclePrev<cr>', 'n' },
-      { '`Right', '<cmd>BufferLineCycleNext<cr>', 'n' },
+      { '<c-tab>', '<cmd>BufferLineCyclePrev<cr>', 'n' },
+      { '<c-s-tab>', '<cmd>BufferLineCycleNext<cr>', 'n' },
     },
     config = function()
       require('bufferline').setup {
@@ -216,7 +212,7 @@ return {
     },
     keys = {
       {
-        '<space>',
+        '<cr>',
         'za',
         'n',
       },
