@@ -1,48 +1,5 @@
 return {
   {
-    'monaqa/dial.nvim',
-    keys = {
-      {
-        '+',
-        '<C-a>',
-        'n',
-      },
-      {
-        '-',
-        '<C-x>',
-        'n',
-      },
-      {
-        '<C-a>',
-        function()
-          return require('dial.map').inc_normal()
-        end,
-        expr = true,
-      },
-      {
-        '<C-x>',
-        function()
-          return require('dial.map').dec_normal()
-        end,
-        expr = true,
-      },
-    },
-    config = function()
-      local augend = require 'dial.augend'
-      require('dial.config').augends:register_group {
-        default = {
-          augend.integer.alias.decimal,
-          augend.integer.alias.hex,
-          augend.date.alias['%Y/%m/%d'],
-          augend.constant.alias.bool,
-          augend.semver.alias.semver,
-          augend.constant.new { elements = { 'let', 'const' } },
-          augend.constant.new { elements = { 'True', 'False' } },
-        },
-      }
-    end,
-  },
-  {
     'github/copilot.vim',
     cmd = { 'Copilot' },
     lazy = false,
@@ -129,7 +86,6 @@ return {
   },
   {
     'tpope/vim-projectionist',
-    event = 'VeryLazy',
     config = function()
       vim.g.projectionist_heuristics = {
         ['*.go'] = {

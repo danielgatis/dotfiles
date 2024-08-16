@@ -1,19 +1,7 @@
 return {
-  { 'kyazdani42/nvim-web-devicons' },
-  { 'j-hui/fidget.nvim' },
   {
-    'rcarriga/nvim-notify',
-    config = function()
-      require('notify').setup {
-        icons = {
-          ERROR = '',
-          WARN = '',
-          INFO = '',
-          DEBUG = '',
-          TRACE = '✎',
-        },
-      }
-    end,
+    'j-hui/fidget.nvim',
+    event = 'VeryLazy',
   },
   {
     'folke/noice.nvim',
@@ -41,8 +29,29 @@ return {
     end,
   },
   {
-    'stevearc/dressing.nvim',
-    opts = {},
+    'akinsho/bufferline.nvim',
     event = 'VeryLazy',
+    keys = {
+      { '<c-tab>', '<cmd>BufferLineCyclePrev<cr>', 'n' },
+      { '<c-s-tab>', '<cmd>BufferLineCycleNext<cr>', 'n' },
+    },
+    config = function()
+      require('bufferline').setup {
+        options = {
+          offsets = {
+            {
+              filetype = 'NvimTree',
+            },
+          },
+        },
+      }
+    end,
+  },
+  {
+    'nvim-lualine/lualine.nvim',
+    event = 'VeryLazy',
+    opts = {
+      options = { theme = 'catppuccin-mocha' },
+    },
   },
 }

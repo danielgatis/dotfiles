@@ -3,21 +3,21 @@ return {
     'ibhagwan/fzf-lua',
     keys = {
       {
-        '<leader>p',
+        '<c-p>',
         function()
           require('fzf-lua').files()
         end,
         'n',
       },
       {
-        '<leader>[',
+        '<c-s>',
         function()
           require('fzf-lua').live_grep_glob()
         end,
         'n',
       },
       {
-        '<leader>]',
+        '<c-m-p>',
         function()
           require('fzf-lua').git_status()
         end,
@@ -38,7 +38,7 @@ return {
     'nvim-tree/nvim-tree.lua',
     keys = {
       {
-        '<leader>\\',
+        '<c-\\>',
         '<cmd>NvimTreeFindFileToggle<cr>',
         'n',
       },
@@ -117,53 +117,8 @@ return {
     },
   },
   {
-    'akinsho/bufferline.nvim',
-    event = 'VeryLazy',
-    keys = {
-      { '<c-tab>', '<cmd>BufferLineCyclePrev<cr>', 'n' },
-      { '<c-s-tab>', '<cmd>BufferLineCycleNext<cr>', 'n' },
-    },
-    config = function()
-      require('bufferline').setup {
-        options = {
-          offsets = {
-            {
-              filetype = 'NvimTree',
-            },
-          },
-        },
-      }
-    end,
-  },
-  {
-    'nvim-lualine/lualine.nvim',
-    event = 'VeryLazy',
-    opts = {
-      options = { theme = 'catppuccin-mocha' },
-    },
-  },
-  {
     'sunaku/tmux-navigate',
     event = 'VeryLazy',
-  },
-  {
-    'tamton-aquib/duck.nvim',
-    keys = {
-      {
-        '<leader>dd',
-        function()
-          require('duck').hatch()
-        end,
-        'n',
-      },
-      {
-        '<leader>dk',
-        function()
-          require('duck').cook()
-        end,
-        'n',
-      },
-    },
   },
   {
     'tpope/vim-repeat',
