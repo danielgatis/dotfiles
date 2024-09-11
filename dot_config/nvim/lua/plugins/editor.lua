@@ -105,18 +105,6 @@ return {
     event = { 'BufReadPost', 'BufNewFile', 'BufWritePre' },
   },
   {
-    'famiu/bufdelete.nvim',
-    keys = {
-      {
-        '<c-q>',
-        function()
-          require('bufdelete').bufdelete(0, true)
-        end,
-        'n',
-      },
-    },
-  },
-  {
     'sunaku/tmux-navigate',
     event = 'VeryLazy',
   },

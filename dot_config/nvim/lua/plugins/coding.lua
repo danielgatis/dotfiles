@@ -14,7 +14,14 @@ return {
   },
   {
     'windwp/nvim-autopairs',
-    event = { 'BufReadPost', 'BufNewFile', 'BufWritePre' },
+    event = { 'InsertEnter' },
+    dependencies = { 'hrsh7th/nvim-cmp' },
+    config = function()
+      require('nvim-autopairs').setup {}
+      local cmp_autopairs = require 'nvim-autopairs.completion.cmp'
+      local cmp = require 'cmp'
+      cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
+    end,
   },
   {
     'folke/trouble.nvim',
@@ -28,61 +35,6 @@ return {
         'n',
       },
     },
-  },
-  {
-    'stevearc/conform.nvim',
-    keys = {
-      {
-        '<leader>ff',
-        function()
-          require('conform').format { async = true, lsp_fallback = true }
-        end,
-        { 'n', 'v' },
-      },
-    },
-    opt = {
-      formatters_by_ft = {
-        lua = { 'stylua' },
-        python = { 'isort', 'black' },
-        javascript = { { 'prettierd' } },
-        typescript = { { 'prettierd' } },
-        typescriptreact = { { 'prettierd' } },
-        javascriptreact = { { 'prettierd' } },
-        html = { { 'prettierd' } },
-        css = { { 'prettierd' } },
-        json = { { 'prettierd' } },
-        yaml = { { 'prettierd' } },
-        ruby = { 'rubocop' },
-        go = { 'gofmt' },
-      },
-      format_on_save = function(_) end,
-      format_after_save = function(_) end,
-    },
-  },
-  {
-    'mfussenegger/nvim-lint',
-    event = { 'BufWritePost' },
-    opts = {
-      linters_by_ft = {
-        javascript = { 'eslint_d' },
-        typescript = { 'eslint_d' },
-        typescriptreact = { 'eslint_d' },
-        javascriptreact = { 'eslint_d' },
-        html = { 'eslint_d' },
-        ruby = { 'rubocop' },
-        go = { 'golangcilint' },
-        python = { 'pylint' },
-        lua = { 'luacheck' },
-      },
-    },
-    config = function()
-      vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave', 'TextChanged' }, {
-        group = vim.api.nvim_create_augroup('lint', { clear = true }),
-        callback = function()
-          require('lint').try_lint()
-        end,
-      })
-    end,
   },
   {
     'tpope/vim-projectionist',
@@ -130,6 +82,7 @@ return {
         },
       }
     end,
+    event = { 'VeryLazy' },
     keys = {
       {
         '<leader>a',

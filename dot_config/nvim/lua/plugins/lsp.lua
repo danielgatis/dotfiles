@@ -8,15 +8,34 @@ return {
       local servers = {
         'solargraph',
         'gopls',
-        'tsserver',
+        'ts_ls',
         'pyright',
         'lua_ls',
       }
 
+      local linters = {
+        'eslint',
+        'rubocop',
+        'golangci_lint_ls',
+      }
+
+      merged = {}
+
+      -- Function to merge two tables
+      function mergeTables(destination, source)
+          for _, value in ipairs(source) do
+              table.insert(destination, value)
+          end
+      end
+
+      -- Merge the tables
+      mergeTables(merged, servers)
+      mergeTables(merged, linters)
+
       require('mason').setup()
       require('mason-lspconfig').setup {
         automatic_installation = true,
-        ensure_installed = servers,
+        ensure_installed = merged,
       }
 
       vim.api.nvim_create_autocmd('LspAttach', {
@@ -57,6 +76,56 @@ return {
           },
         },
       }
+    end,
+  },
+  {
+    'stevearc/conform.nvim',
+    keys = {
+      {
+        '<leader>ff',
+        function()
+          require('conform').format { async = true, lsp_fallback = true }
+        end,
+        { 'n', 'v' },
+      },
+    },
+    opt = {
+      formatters_by_ft = {
+        javascript = { { 'eslint' } },
+        typescript = { { 'eslint' } },
+        typescriptreact = { { 'eslint' } },
+        javascriptreact = { { 'eslint' } },
+        html = { { 'eslint' } },
+        css = { { 'eslint' } },
+        json = { { 'eslint' } },
+        yaml = { { 'eslint' } },
+        ruby = { 'rubocop' },
+        go = { 'gofmt' },
+      },
+      format_on_save = function(_) end,
+      format_after_save = function(_) end,
+    },
+  },
+  {
+    'mfussenegger/nvim-lint',
+    event = { 'BufWritePost' },
+    opts = {
+      linters_by_ft = {
+        javascript = { 'eslint' },
+        typescript = { 'eslint' },
+        typescriptreact = { 'eslint' },
+        javascriptreact = { 'eslint' },
+        html = { 'eslint' },
+        ruby = { 'rubocop' },
+        go = { 'golangcilint' },
+      },
+    },
+    config = function()
+      vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave', 'TextChanged' }, {
+        callback = function()
+          require("lint").try_lint()
+        end,
+      })
     end,
   },
 }

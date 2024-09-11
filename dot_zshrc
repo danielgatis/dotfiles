@@ -52,12 +52,14 @@ alias vim="nvim"
 alias cop="git add -N .; git diff --name-only | grep '.rb\|.rake' | grep -v .erb | grep -v 'db/schema.rb' | xargs bundle exec rubocop -A"
 alias spec='bin/rspec $(git ls-files --modified --others spec | grep -v factories)'
 alias pspec='bin/rspec $(gh pr view --json files --jq ".files.[].path" | grep _spec.rb)'
+alias pcop='bundle exec rubocop -A $(gh pr view --json files --jq ".files.[].path" | grep _spec.rb)'
 
 alias ls='lsd'
 alias l='ls -l'
 alias la='ls -a'
 alias lla='ls -la'
 alias lt='ls --tree'
+alias rspec='bin/rspec'
 
 # Exports
 export EDITOR=nvim
@@ -74,3 +76,9 @@ source /opt/homebrew/opt/asdf/libexec/asdf.sh
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 ## Extras
+export ASDF_GOLANG_MOD_VERSION_ENABLED=true
+unset GEM_HOME
+
+function idea() {
+  open -a "IntelliJ IDEA CE" "$1"
+}

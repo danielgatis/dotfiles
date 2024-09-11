@@ -54,4 +54,8 @@ return {
       options = { theme = 'catppuccin-mocha' },
     },
   },
+  {
+    'nvim-tree/nvim-web-devicons',
+    event = 'VeryLazy',
+  }
 }
