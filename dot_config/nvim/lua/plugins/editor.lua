@@ -1,35 +1,5 @@
 return {
   {
-    'ibhagwan/fzf-lua',
-    keys = {
-      {
-        '<c-p>',
-        function()
-          require('fzf-lua').files()
-        end,
-        'n',
-      },
-      {
-        '<c-s>',
-        function()
-          require('fzf-lua').live_grep_glob()
-        end,
-        'n',
-      },
-      {
-        '<c-m-p>',
-        function()
-          require('fzf-lua').git_status()
-        end,
-        'n',
-      },
-    },
-    opts = {
-      winopts = { preview = { hidden = 'hidden' } },
-      file_ignore_patterns = { 'node_modules/.*', 'vendor/.*', 'tmp/.*', '.git/.*' },
-    },
-  },
-  {
     'ibhagwan/smartyank.nvim',
     event = { 'BufReadPost', 'BufNewFile', 'BufWritePre' },
     opts = { highlight = { timeout = 200 } },
