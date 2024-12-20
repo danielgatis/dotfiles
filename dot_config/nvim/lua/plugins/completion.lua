@@ -1,112 +1,73 @@
 return {
   {
-    'hrsh7th/nvim-cmp',
-    event = { 'InsertEnter', 'CmdlineEnter' },
+    'saghen/blink.cmp',
     dependencies = {
-      { 'L3MON4D3/LuaSnip' },
-      { 'saadparwaiz1/cmp_luasnip' },
-      { 'hrsh7th/cmp-buffer' },
-      { 'hrsh7th/cmp-path' },
-      { 'hrsh7th/cmp-nvim-lsp' },
-      { 'hrsh7th/cmp-cmdline' },
-      { 'onsails/lspkind.nvim' },
-      { 'petertriho/cmp-git' },
+      'rafamadriz/friendly-snippets',
+      'giuxtaposition/blink-cmp-copilot',
     },
-    config = function()
-      local has_words_before = function()
-        unpack = unpack or table.unpack
-        local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-        return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match '%s' == nil
-      end
-
-      local luasnip = require 'luasnip'
-      luasnip.config.setup {}
-
-      local cmp = require 'cmp'
-      cmp.setup {
-        snippet = {
-          expand = function(args)
-            luasnip.lsp_expand(args.body)
-          end,
-        },
-        mapping = cmp.mapping.preset.insert {
-          ['<C-n>'] = cmp.mapping.select_next_item(),
-          ['<C-p>'] = cmp.mapping.select_prev_item(),
-          ['<Down>'] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-              cmp.select_next_item()
-            else
-              fallback()
-            end
-          end, { 'i', 's' }),
-          ['<Up>'] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-              cmp.select_prev_item()
-            else
-              fallback()
-            end
-          end, { 'i', 's' }),
-          ['<CR>'] = cmp.mapping.confirm { select = true },
-          ['<Tab>'] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-              cmp.select_next_item()
-            elseif has_words_before() then
-              cmp.complete()
-            else
-              fallback()
-            end
-          end, { 'i', 's' }),
-          ['<S-Tab>'] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-              cmp.select_prev_item()
-            else
-              fallback()
-            end
-          end, { 'i', 's' }),
-        },
-        sources = cmp.config.sources {
-          { name = 'nvim_lsp' },
-          { name = 'buffer' },
-          { name = 'path' },
-        },
-        formatting = {
-          fields = { 'abbr', 'kind', 'menu' },
-          format = require('lspkind').cmp_format {
-            mode = 'text',
-            maxwidth = 50,
-            ellipsis_char = '...',
+    version = 'v0.*',
+    opts = {
+      keymap = { preset = 'super-tab' },
+      sources = {
+        providers = {
+          copilot = {
+            name = 'copilot',
+            module = 'blink-cmp-copilot',
+            score_offset = 100,
+            async = true,
+            transform_items = function(_, items)
+              local CompletionItemKind = require('blink.cmp.types').CompletionItemKind
+              local kind_idx = #CompletionItemKind + 1
+              CompletionItemKind[kind_idx] = 'Copilot'
+              for _, item in ipairs(items) do
+                item.kind = kind_idx
+              end
+              return items
+            end,
           },
         },
-      }
-
-      cmp.setup.filetype('gitcommit', {
-        sources = cmp.config.sources({
-          { name = 'git' },
-        }, {
-          { name = 'buffer' },
-        }),
-      })
-
-      cmp.setup.cmdline({ '/', '?' }, {
-        mapping = cmp.mapping.preset.cmdline(),
-        sources = {
-          { name = 'buffer' },
+        completion = {
+          enabled_providers = { 'lsp', 'path', 'snippets', 'buffer', 'copilot' },
         },
-      })
+      },
+      appearance = {
+        kind_icons = {
+          Copilot = '',
+          Text = '󰉿',
+          Method = '󰊕',
+          Function = '󰊕',
+          Constructor = '󰒓',
 
-      cmp.setup.cmdline(':', {
-        mapping = cmp.mapping.preset.cmdline(),
-        sources = cmp.config.sources({
-          { name = 'path' },
-        }, {
-          { name = 'cmdline' },
-        }),
-        matching = { disallow_symbol_nonprefix_matching = false },
-      })
+          Field = '󰜢',
+          Variable = '󰆦',
+          Property = '󰖷',
 
-      local cmp_autopairs = require 'nvim-autopairs.completion.cmp'
-      require('nvim-autopairs').setup { check_ts = true }
-      cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done {})
-    end,
+          Class = '󱡠',
+          Interface = '󱡠',
+          Struct = '󱡠',
+          Module = '󰅩',
+
+          Unit = '󰪚',
+          Value = '󰦨',
+          Enum = '󰦨',
+          EnumMember = '󰦨',
+
+          Keyword = '󰻾',
+          Constant = '󰏿',
+
+          Snippet = '󱄽',
+          Color = '󰏘',
+          File = '󰈔',
+          Reference = '󰬲',
+          Folder = '󰉋',
+          Event = '󱐋',
+          Operator = '󰪚',
+          TypeParameter = '󰬛',
+        },
+      },
+      completion = {
+        ghost_text = { enabled = true },
+      },
+    },
   },
 }

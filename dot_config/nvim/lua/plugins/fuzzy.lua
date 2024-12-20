@@ -14,16 +14,31 @@ return {
       },
       {
         'nvim-telescope/telescope-fzf-native.nvim',
-        build = 'make'
+        build = 'make',
       },
     },
     keys = {
-      { '<C-p>', function() require('telescope').extensions.smart_open.smart_open() end },
-      { '<C-M-p>', function() require('telescope.builtin').git_status() end },
-      { '<C-s>', function() require('telescope.builtin').live_grep() end },
+      {
+        '<C-p>',
+        function()
+          require('telescope').extensions.smart_open.smart_open()
+        end,
+      },
+      {
+        '<C-M-p>',
+        function()
+          require('telescope.builtin').git_status()
+        end,
+      },
+      {
+        '<C-s>',
+        function()
+          require('telescope.builtin').live_grep()
+        end,
+      },
     },
     config = function()
-      local telescope = require('telescope')
+      local telescope = require 'telescope'
 
       telescope.setup {
         extensions = {
@@ -33,8 +48,8 @@ return {
         },
       }
 
-      telescope.load_extension('smart_open')
-      telescope.load_extension('fzf')
+      telescope.load_extension 'smart_open'
+      telescope.load_extension 'fzf'
     end,
   },
 }

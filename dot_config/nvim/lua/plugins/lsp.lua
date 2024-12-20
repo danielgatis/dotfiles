@@ -3,40 +3,38 @@ return {
   { 'williamboman/mason-lspconfig.nvim' },
   {
     'neovim/nvim-lspconfig',
+    dependencies = { 'saghen/blink.cmp' },
     event = 'VeryLazy',
-    config = function()
-      local servers = {
-        'solargraph',
-        'gopls',
-        'ts_ls',
-        'pyright',
-        'lua_ls',
-      }
-
-      local linters = {
-        'eslint',
-        'rubocop',
-        'golangci_lint_ls',
-      }
-
-      merged = {}
-
-      -- Function to merge two tables
-      function mergeTables(destination, source)
-          for _, value in ipairs(source) do
-              table.insert(destination, value)
-          end
-      end
-
-      -- Merge the tables
-      mergeTables(merged, servers)
-      mergeTables(merged, linters)
-
+    opts = {
+      servers = {
+        solargraph = {},
+        gopls = {},
+        ts_ls = {},
+        pyright = {},
+        lua_ls = {},
+      },
+    },
+    config = function(_, opts)
       require('mason').setup()
       require('mason-lspconfig').setup {
         automatic_installation = true,
-        ensure_installed = merged,
+        ensure_installed = {
+          'solargraph',
+          'gopls',
+          'ts_ls',
+          'pyright',
+          'lua_ls',
+          'eslint',
+          'rubocop',
+          'golangci_lint_ls',
+        },
       }
+
+      local lspconfig = require 'lspconfig'
+      for server, config in pairs(opts.servers) do
+        config.capabilities = require('blink.cmp').get_lsp_capabilities(config.capabilities)
+        lspconfig[server].setup(config)
+      end
 
       vim.api.nvim_create_autocmd('LspAttach', {
         callback = function(event)
@@ -57,25 +55,6 @@ return {
           vim.keymap.set('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<cr>', opts)
         end,
       })
-
-      local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
-      for _, server in ipairs(servers) do
-        require('lspconfig')[server].setup {
-          capabilities = lsp_capabilities,
-        }
-      end
-
-      local lspconfig = require 'lspconfig'
-      lspconfig.solargraph.setup {}
-      lspconfig.lua_ls.setup {
-        settings = {
-          Lua = {
-            diagnostics = {
-              globals = { 'vim' },
-            },
-          },
-        },
-      }
     end,
   },
   {
@@ -123,7 +102,7 @@ return {
     config = function()
       vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave', 'TextChanged' }, {
         callback = function()
-          require("lint").try_lint()
+          require('lint').try_lint()
         end,
       })
     end,
