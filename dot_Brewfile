@@ -1,7 +1,3 @@
-tap "homebrew/bundle"
-tap "homebrew/cask"
-tap "homebrew/core"
-tap "homebrew/services"
 tap "ringohub/redis-cli"
 
 brew "antigen"
@@ -14,7 +10,6 @@ brew "croc"
 brew "entr"
 brew "fd"
 brew "ffmpeg"
-brew "font-meslo-for-powerlevel10k"
 brew "fzf"
 brew "gawk"
 brew "git-delta"
@@ -37,9 +32,9 @@ brew "zsh"
 
 cask_args require_sha: true, force: true
 
+cask "font-meslo-for-powerlevel10k"
 cask "alacritty"
 cask "appcleaner"
-cask "cakebrew"
 cask "chromedriver"
 cask "dbeaver-community"
 cask "docker"
