@@ -1,12 +1,16 @@
+if [[ "$(uname -m)" == "arm64" ]]; then
+  export BREW_PREFIX="/opt/homebrew"
+else
+  export BREW_PREFIX="/usr/local"
+fi
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
 # Antigen
-source /opt/homebrew/share/antigen/antigen.zsh
+source "$BREW_PREFIX/share/antigen/antigen.zsh"
 
 antigen use oh-my-zsh
 antigen bundle zsh-users/zsh-syntax-highlighting
@@ -57,21 +61,14 @@ alias rspec='bin/rspec'
 
 # Exports
 export EDITOR=nvim
-export PATH="$HOME/.local/bin:/opt/homebrew/opt/postgresql@13/bin:$PATH"
-export PATH="/opt/homebrew/opt/postgresql@13/bin:$PATH"
-export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
 # Initializers
-eval "$(/opt/homebrew/bin/brew shellenv)"
+eval "$($BREW_PREFIX/bin/brew shellenv)"
 eval "$(zoxide init zsh)"
 eval "$(direnv hook zsh)"
 source <(fzf --zsh)
-source /opt/homebrew/opt/asdf/libexec/asdf.sh
+source "$BREW_PREFIX/opt/asdf/libexec/asdf.sh"
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-## Extras
-export ASDF_GOLANG_MOD_VERSION_ENABLED=true
-unset GEM_HOME
 
 function idea() {
   open -a "IntelliJ IDEA CE" "$1"
