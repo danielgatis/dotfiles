@@ -65,9 +65,9 @@ export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 eval "$(/opt/homebrew/bin/brew shellenv)"
 eval "$(zoxide init zsh)"
 eval "$(direnv hook zsh)"
+source <(fzf --zsh)
 source /opt/homebrew/opt/asdf/libexec/asdf.sh
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 ## Extras
 export ASDF_GOLANG_MOD_VERSION_ENABLED=true
