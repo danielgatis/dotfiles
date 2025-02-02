@@ -361,7 +361,7 @@ mods = "Command"
 history = 99999
 
 [terminal.shell]
-args = ["-l", "-c", "tmux new-session -A -s main"]
+args = ["-l", "-c", "/opt/homebrew/bin/tmux new-session -A -s main"]
 program = "/bin/zsh"
 
 [window]
