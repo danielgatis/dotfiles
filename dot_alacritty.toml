@@ -1,6 +1,3 @@
-import = ["~/.config/alacritty/catppuccin-mocha.toml"]
-live_config_reload = true
-
 [env]
 TERM = "xterm-256color"
 
@@ -363,9 +360,9 @@ mods = "Command"
 [scrolling]
 history = 99999
 
-[shell]
+[terminal.shell]
 args = ["-l", "-c", "/opt/homebrew/bin/tmux new-session -A -s main"]
-program = "/bin/zsh"
+program = "/opt/homebrew/bin/zsh"
 
 [window]
 decorations = "buttonless"
@@ -374,3 +371,7 @@ option_as_alt = "OnlyLeft"
 [window.padding]
 x = 10
 y = 10
+
+[general]
+live_config_reload = true
+import = ["~/.config/alacritty/catppuccin-mocha.toml"]
