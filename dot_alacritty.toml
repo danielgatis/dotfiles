@@ -365,7 +365,7 @@ history = 99999
 
 [shell]
 args = ["-l", "-c", "/opt/homebrew/bin/tmux new-session -A -s main"]
-program = "/opt/homebrew/bin/zsh"
+program = "/bin/zsh"
 
 [window]
 decorations = "buttonless"
