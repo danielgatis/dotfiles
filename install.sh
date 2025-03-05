@@ -13,7 +13,7 @@ printf "\n\nCloning dotfiles\n\n"
 chezmoi init --apply danielgatis
 
 printf "\n\nInstalling homebrew packages\n\n"
-brew bundle --global --force --no-lock || true
+brew bundle --global --force || true
 
 printf "\n\nInstalling tmux plugins\n\n"
 tmux start-server
