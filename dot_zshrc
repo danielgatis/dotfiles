@@ -61,6 +61,7 @@ alias rspec='bin/rspec'
 
 # Exports
 export EDITOR=nvim
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
 # Initializers
 eval "$($BREW_PREFIX/bin/brew shellenv)"
