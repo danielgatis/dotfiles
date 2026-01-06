@@ -65,7 +65,7 @@
 
 ## which style to use
 ## possible values: auto, full, compact
-# style = "auto"
+style = "compact"
 
 ## the maximum number of lines the interface should take up
 ## set it to 0 to always go full screen
@@ -81,7 +81,7 @@
 
 ## enable or disable showing a preview of the selected command
 ## useful when the command is longer than the terminal width and is cut off
-# show_preview = true
+show_preview = false
 
 ## what to do when the escape key is pressed when searching
 ## possible values: return-original, return-query
@@ -102,10 +102,10 @@
 
 ## Show numeric shortcuts (1..9) beside list items in the TUI
 ## set to false to hide the moving numbers if you find them distracting
-# show_numeric_shortcuts = true
+show_numeric_shortcuts = false
 
 ## default history list format - can also be specified with the --format arg
-# history_format = "{time}\t{command}\t{duration}"
+history_format = "{command}"
 
 ## prevent commands matching any of these regexes from being written to history.
 ## Note that these regular expressions are unanchored, i.e. if they don't start
