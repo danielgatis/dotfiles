@@ -4,11 +4,6 @@ else
   export BREW_PREFIX="/usr/local"
 fi
 
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
 # Antigen
 source "$BREW_PREFIX/share/antigen/antigen.zsh"
 
@@ -16,9 +11,6 @@ antigen use oh-my-zsh
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle zsh-users/zsh-completions
-
-THEME=romkatv/powerlevel10k
-[[ `antigen list | grep $THEME | wc -l` -gt 0 ]] || antigen theme $THEME
 
 antigen apply
 
@@ -58,10 +50,16 @@ alias spec='bin/rspec $(git ls-files --modified --others spec | grep -v factorie
 alias pspec='bin/rspec $(gh pr view --json files --jq ".files.[].path" | grep _spec.rb)'
 alias pcop='bundle exec rubocop -A $(gh pr view --json files --jq ".files.[].path" | grep _spec.rb)'
 alias rspec='bin/rspec'
+alias deb="docker exec -it musashi-web-1 bundle exec "
+alias code="cursor"
+alias poetry="~/.local/bin/poetry"
 
 # Exports
 export EDITOR=nvim
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+export ANDROID_HOME=$HOME/Library/Android/sdk
+export PATH=$PATH:$ANDROID_HOME/emulator
+export PATH=$PATH:$ANDROID_HOME/platform-tools
 
 # Initializers
 eval "$($BREW_PREFIX/bin/brew shellenv)"
@@ -74,3 +72,16 @@ source "$BREW_PREFIX/opt/asdf/libexec/asdf.sh"
 function idea() {
   open -a "IntelliJ IDEA CE" "$1"
 }
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=(/Users/daniel/.docker/completions $fpath)
+autoload -Uz compinit
+compinit
+# End of Docker CLI completions
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /opt/homebrew/bin/terraform terraform
+
+. "$HOME/.atuin/bin/env"
+
+eval "$(atuin init zsh --disable-up-arrow)"
+eval "$(starship init zsh)"
