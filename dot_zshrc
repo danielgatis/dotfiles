@@ -50,8 +50,6 @@ alias spec='bin/rspec $(git ls-files --modified --others spec | grep -v factorie
 alias pspec='bin/rspec $(gh pr view --json files --jq ".files.[].path" | grep _spec.rb)'
 alias pcop='bundle exec rubocop -A $(gh pr view --json files --jq ".files.[].path" | grep _spec.rb)'
 alias rspec='bin/rspec'
-alias deb="docker exec -it musashi-web-1 bundle exec "
-alias code="cursor"
 alias poetry="~/.local/bin/poetry"
 
 # Exports
@@ -67,21 +65,26 @@ eval "$(zoxide init zsh)"
 eval "$(direnv hook zsh)"
 source <(fzf --zsh)
 source "$BREW_PREFIX/opt/asdf/libexec/asdf.sh"
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-function idea() {
-  open -a "IntelliJ IDEA CE" "$1"
-}
-# The following lines have been added by Docker Desktop to enable Docker CLI completions.
-fpath=(/Users/daniel/.docker/completions $fpath)
 autoload -Uz compinit
 compinit
-# End of Docker CLI completions
-
 autoload -U +X bashcompinit && bashcompinit
-complete -o nospace -C /opt/homebrew/bin/terraform terraform
 
 . "$HOME/.atuin/bin/env"
 
 eval "$(atuin init zsh --disable-up-arrow)"
 eval "$(starship init zsh)"
+
+claude-my() {
+  export CLAUDE_CONFIG_DIR="$HOME/.claude-my"
+  command claude "$@" --settings "$CLAUDE_CONFIG_DIR/settings.json"
+}
+
+claude-ue() {
+  export CLAUDE_CONFIG_DIR="$HOME/.claude-ue"
+  command claude "$@" --settings "$CLAUDE_CONFIG_DIR/settings.json"
+}
+
+claude() {
+  echo "You need to specify: claude-my or claude-ue"
+}
