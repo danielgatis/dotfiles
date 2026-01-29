@@ -33,13 +33,6 @@ setopt HIST_VERIFY               # Don't execute immediately upon history expans
 setopt HIST_BEEP                 # Beep when accessing nonexistent history.
 
 # Options
-setopt extended_history
-setopt hist_expire_dups_first
-setopt hist_ignore_all_dups
-setopt hist_ignore_space
-setopt hist_verify
-setopt inc_append_history
-setopt share_history
 bindkey -e
 
 # Aliases
@@ -56,8 +49,6 @@ alias poetry="~/.local/bin/poetry"
 export EDITOR=nvim
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 export ANDROID_HOME=$HOME/Library/Android/sdk
-export PATH=$PATH:$ANDROID_HOME/emulator
-export PATH=$PATH:$ANDROID_HOME/platform-tools
 
 # Initializers
 eval "$($BREW_PREFIX/bin/brew shellenv)"
@@ -68,6 +59,8 @@ source "$BREW_PREFIX/opt/asdf/libexec/asdf.sh"
 
 autoload -Uz compinit
 compinit
+# End of Docker CLI completions
+
 autoload -U +X bashcompinit && bashcompinit
 
 . "$HOME/.atuin/bin/env"
@@ -75,16 +68,22 @@ autoload -U +X bashcompinit && bashcompinit
 eval "$(atuin init zsh --disable-up-arrow)"
 eval "$(starship init zsh)"
 
-claude-my() {
-  export CLAUDE_CONFIG_DIR="$HOME/.claude-my"
-  command claude "$@" --settings "$CLAUDE_CONFIG_DIR/settings.json"
-}
+# claude-my() {
+#   export CLAUDE_CONFIG_DIR="$HOME/.claude-my"
+#   command claude "$@" --settings "$CLAUDE_CONFIG_DIR/settings.json"
+# }
 
-claude-ue() {
-  export CLAUDE_CONFIG_DIR="$HOME/.claude-ue"
-  command claude "$@" --settings "$CLAUDE_CONFIG_DIR/settings.json"
-}
+# claude-ue() {
+#   export CLAUDE_CONFIG_DIR="$HOME/.claude-ue"
+#   command claude "$@" --settings "$CLAUDE_CONFIG_DIR/settings.json"
+# }
 
-claude() {
-  echo "You need to specify: claude-my or claude-ue"
-}
+# claude() {
+#   echo "You need to specify: claude-my or claude-ue"
+# }
+
+# PATH (no final para ter prioridade sobre inicializadores)
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
+export PATH="$ANDROID_HOME/platform-tools:$PATH"
+export PATH="$ANDROID_HOME/emulator:$PATH"
