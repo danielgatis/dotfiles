@@ -9,4 +9,3 @@ config/initializers/excluded/*
 *.log
 .zed
 bin/*
-.claude
