@@ -1,5 +1,3 @@
-tap "ringohub/redis-cli"
-
 brew "antigen"
 brew "asdf"
 brew "bash"
@@ -20,7 +18,6 @@ brew "libffi"
 brew "lsd"
 brew "nvim"
 brew "openssl"
-brew "redis-cli"
 brew "ripgrep"
 brew "starship"
 brew "tree"
