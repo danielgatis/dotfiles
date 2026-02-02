@@ -63,8 +63,6 @@ compinit
 
 autoload -U +X bashcompinit && bashcompinit
 
-. "$HOME/.atuin/bin/env"
-
 eval "$(atuin init zsh --disable-up-arrow)"
 eval "$(starship init zsh)"
 
@@ -81,10 +79,6 @@ eval "$(starship init zsh)"
 # claude() {
 #   echo "You need to specify: claude-my or claude-ue"
 # }
-
-export NVM_DIR="$HOME/.nvm"
-  [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
-  [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
   
 # PATH (no final para ter prioridade sobre inicializadores)
 export PATH="$HOME/.local/bin:$PATH"
