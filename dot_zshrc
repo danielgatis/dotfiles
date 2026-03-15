@@ -44,6 +44,10 @@ alias pspec='bin/rspec $(gh pr view --json files --jq ".files.[].path" | grep _s
 alias pcop='bundle exec rubocop -A $(gh pr view --json files --jq ".files.[].path" | grep _spec.rb)'
 alias rspec='bin/rspec'
 alias poetry="~/.local/bin/poetry"
+ss() {
+  local session=$(awk '/^session:/ {print $2}' .smug.yml)
+  smug start -f .smug.yml --detach && alacritty --command tmux attach-session -t "$session" &disown
+}
 
 # Exports
 export EDITOR=nvim
@@ -66,19 +70,15 @@ autoload -U +X bashcompinit && bashcompinit
 eval "$(atuin init zsh --disable-up-arrow)"
 eval "$(starship init zsh)"
 
-# claude-my() {
-#   export CLAUDE_CONFIG_DIR="$HOME/.claude-my"
-#   command claude "$@" --settings "$CLAUDE_CONFIG_DIR/settings.json"
-# }
+c() {
+  command /opt/homebrew/bin/claude "$@"
+}
 
-# claude-ue() {
-#   export CLAUDE_CONFIG_DIR="$HOME/.claude-ue"
-#   command claude "$@" --settings "$CLAUDE_CONFIG_DIR/settings.json"
-# }
-
-# claude() {
-#   echo "You need to specify: claude-my or claude-ue"
-# }
+cue() {
+  CLAUDE_CONFIG_DIR="$HOME/.claude-ue" \
+  CLAUDE_SETTINGS_FILE="$HOME/.claude-ue/settings.json" \
+  command /opt/homebrew/bin/claude "$@"
+}
   
 # PATH (no final para ter prioridade sobre inicializadores)
 export PATH="$HOME/.local/bin:$PATH"
