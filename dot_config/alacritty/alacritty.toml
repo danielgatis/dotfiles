@@ -361,7 +361,7 @@ mods = "Command"
 history = 99999
 
 [terminal.shell]
-args = ["-l", "-c", "/opt/homebrew/bin/tmux new-session -s $(uuidgen)"]
+args = ["-l", "-c", "/opt/homebrew/bin/tmux new-session -s $(uuidgen) \\; set-option destroy-unattached on"]
 program = "/bin/zsh"
 
 [window]
